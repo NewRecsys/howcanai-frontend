@@ -25,39 +25,25 @@ const routes = [
     path: "/chat",
     component: ChatView,
     beforeEnter: (to, from, next) => {
-      store.dispatch('resetNewChat'); // resetNewChat 액션 호출
+      store.dispatch('resetNewChat');
       store.dispatch('resetChatRoom');
       store.dispatch('fetchChatList')
-      .then(() => {
-        next();
-      })
-      .catch(error => {
-        console.error(error);
-        next(false); // 라우트 진입을 중단하고 에러 처리
-      });
+        .then(() => {
+          next();
+        })
+        .catch(error => {
+          console.error(error);
+          next(false); // 라우트 진입을 중단하고 에러 처리
+        });
     },
     children: [
       {
-        path: "/chat/:id", 
+        path: "/chat/:id",
         component: ChatMainArea,
         beforeRouteLeave(to, from, next) {
           // chatDetail 초기화 
           store.dispatch('resetChatDetail');
-  
           next();
-        },
-        beforeEnter: (to, from, next) => {
-          store.commit('setIsFirst', true);
-
-          const chatRoomId = to.params.id;
-          store.dispatch('fetchChatDetail', chatRoomId)
-          .then(() => {
-            next();
-          })
-          .catch(error => {
-            console.error(error);
-            next(false); // 라우트 진입을 중단하고 에러 처리
-          });
         },
       },
     ]

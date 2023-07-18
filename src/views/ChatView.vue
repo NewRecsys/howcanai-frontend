@@ -4,7 +4,8 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import store from '../store/index.js';
+import { mapMutations, mapState } from 'vuex';
 import SideBar from '../components/SideBar.vue'
 import MainPage from '../components/MainPage.vue'
 
@@ -17,10 +18,23 @@ export default {
   methods: {
     ...mapMutations(['addChat']),
   },
-  created() {
-    // /chat 에 들어갈 때마다 리셋 
-    // /chat/:id 에 들어가도 리셋됨
-    this.$store.dispatch('resetNewChat');
+  computed: {
+    ...mapState(['chatList']), // chatList 상태를 가져옴
+  },
+  beforeRouteEnter(to, from, next) {
+    store.dispatch('resetNewChat');
+    store.dispatch('resetChatRoom');
+    store.dispatch('fetchChatList')
+      .then((chatList) => {
+        next(vm => {
+          // 데이터를 가져온 후, ChatMainArea 컴포넌트에 전달
+          vm.chatList = chatList;
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        next(false); // 라우트 진입을 중단하고 에러 처리
+      });
   },
 }
 </script>
@@ -44,7 +58,4 @@ body {
   padding: 0;
 }
 
-/* ::-webkit-scrollbar {
-  width: 0px;
-} */
 </style>
