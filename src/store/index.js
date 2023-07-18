@@ -1,0 +1,223 @@
+// store/index.js
+
+import { createStore } from 'vuex';
+import axios from 'axios';
+import { makeTruncatedText } from '../utils.js';
+
+const store = createStore({
+  state: {
+    // isFirst: 페이지 이동 후 첫 번째 질문인지?
+    isFirst: true,
+
+    // isVisibleNewQuestion: 사용자가 쿼리를 날린 직후인지? (question만 보여줌)
+    isVisibleNewQuestion: false,
+
+    // isLoading: API 리턴 대기중인지? (추후 로딩 애니메이션 추가 예정)
+    isLoading: false,
+
+    // chatList: <SideBar>에서 보여줄 History
+    chatList: [],
+
+    // chatDetail: 한 채팅방의 log
+    chatDetail: [
+      // {
+      //   id: 0, // 한 쌍의 qna 의 id
+      //   question: '질문',
+      //   answer: '답변',
+      //   references: ['https://www.naver.com']
+      // }
+    ],
+
+    // 현재 chatRoomId (/chat 이어도 id 존재함)
+    chatRoomId: 0,
+
+    // 프론트엔드용 (유저가 새로 날린 쿼리)
+    // TODO: newChat { }
+    newChatId: 0,         // 서버에서 받아오기 
+    newQuestion: '',      // 쿼리 날리자마자 갱신 
+    newAnswer: '',        // 서버에서 받아오기 -> 안씀
+    newReferences: [],    // 서버에서 받아오기 -> 안씀
+    // nextQuestions: []  // 기능 추가 (다음 쿼리 추천)
+
+    // 프론트엔드용 (유저 공통 추천 질문)
+    commonPreQuestions: ["트렌드 반영 질문1", "트렌드 반영 질문2", "트렌드 반영 질문3"],
+  },
+
+  mutations: {
+    setIsVisibleNewQuestion(state, bool) {
+      state.isVisibleNewQuestion = bool;
+    },
+    setIsFirst(state, bool) {
+      state.isFirst = bool;
+    },
+    setIsLoading(state, bool) {
+      state.isLoading = bool;
+    },
+    setNewChatId(state, newChatId) { // chatroom_id
+      state.newChatId = newChatId;
+    },
+    setNewQuestion(state, newQuestion) {
+      state.isVisibleNewQuestion = true;
+      state.newQuestion = newQuestion;
+    },
+    setNewAnswer(state, newAnswer) { // 안씀
+      state.newAnswer = newAnswer;
+    },
+    setNewReferences(state, newReferences) { // 안씀
+      state.newReferences = newReferences;
+    },
+
+    setChatDetail(state, chatDetail) { // fetch 용
+      state.chatDetail = chatDetail;
+    },
+    // qna 단위로 push 
+    pushChatDetail(state, newChatDetail) { // newChat update 용
+      state.chatDetail.push(newChatDetail);
+    },
+    setChatList(state, chatList) { // fetch 용
+      state.chatList = chatList;
+    },
+    // id, title 단위로 push
+    pushChatList(state, newChatList) { // newChat update 용 
+      state.chatList.push(newChatList);
+    },
+    // 초기화
+    RESET_NEW_CHAT(state) {
+      state.newQuestion = ''; 
+      state.newAnswer = ''; 
+      state.newReferences = []; 
+      state.isVisibleNewQuestion = false;
+    },
+    // 채팅방 누르기 전 
+    RESET_CHATROOM_ID(state) {
+      state.newChatId = 0;
+    },
+    // 채팅방 누르기 전
+    RESET_CHAT_DETAIL(state) {
+      state.chatDetail = [];
+    },
+  },
+  actions: {
+    // ====== [ makeNewChat ] =========
+    // ✅ '/chat' 에서 '첫번째' 쿼리를 날렸을 때 동작
+    //    1️) chatList에 New Chat을 push 하기
+    //    2️) API로 불러온 chatRoomId로 설정
+    //    3️) newQuestion 설정
+    async makeNewChat({ commit }, question ) {
+      // 첫번째 쿼리를 타이틀로
+      console.log('question:', question);
+      const title = makeTruncatedText(question);
+      try {
+        try {
+          const response = await axios.post('http://49.50.160.214:30005/api/chatroom/create', { 'title': title });
+          // 새로 만들어진 id로 지정
+          console.log(response.data);
+
+          const newChatId = response.data.chatroom_id; // 넘겨받은 id
+          console.log('newChatId:', newChatId);
+
+          commit('setNewChatId', newChatId); // this.newChatId = 넘겨받은 id
+          commit('setNewQuestion', question);
+          // chatList에 추가 
+          const newChatList = { id: newChatId, title: title };
+          console.log('newChatList', newChatList);
+          commit('pushChatList', newChatList);
+          console.log(store.state.chatList);
+        } catch (error) {
+          console.error(error);
+        }
+      } finally {
+        commit('RESET_NEW_CHAT');
+      }
+    },
+
+    // ====== [ sendQuestion ] ========
+    // ✅ /chat 또는 /chat/:id 에서 쿼리를 날렸을 때 동작
+    async sendQuestion({ commit }, { chatRoomId, question }) {
+      // newQuestion에 현재 질문 추가 후 API 대기 처리
+      commit('setNewQuestion', question);
+      commit('setIsLoading', true);
+      console.log('chatRoomId:', chatRoomId);
+      console.log('question:', question);
+      try {
+        try {
+          const response = await axios.post(`http://49.50.160.214:30005/api/qna/create/${chatRoomId}`, { 'query': question });
+
+          const newChatDetail = {
+            id: response.data.id,
+            question: response.data.question,
+            answer: response.data.answer,
+            references: response.data.references,
+          };
+          console.log('newChatDetail:', newChatDetail);
+          // qna 쌍 push 
+          commit('pushChatDetail', newChatDetail);
+        } catch (error) {
+          console.error(error);
+        }
+      } finally {
+        // 임시 newQuestion, newChatID 초기화 
+        commit('RESET_NEW_CHAT');
+        // API 응답 완료 
+        commit('setIsLoading', false);
+        // 임시 말풍선 안 보이게
+        commit('setIsVisibleNewQuestion', false);
+      }
+    },
+
+    // ====== [ fetchChatDetail ] ========
+    // chatRoomId에 해당하는 대화 데이터 전부 불러옴
+    // ✅ /chat/:id 를 누르기 전 동작 (routes/index.js 에서 처리)
+    async fetchChatDetail({ commit, dispatch }, chatRoomId) {
+      try {
+        await dispatch('resetChatDetail');
+        const response = await axios.get(`http://49.50.160.214:30005/api/chatroom/detail/${chatRoomId}`);
+        const chatDetail = response.data.qnas.map(qna => ({
+          id: qna.id,
+          question: qna.question,
+          answer: qna.answer,
+          references: qna.references
+        }));
+        commit('setChatDetail', chatDetail);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    // ====== [ fetchChatList ] ========
+    // chatList (SideBar의 History) 해당하는 데이터 불러옴
+    // ✅ /chat 처음 누를 때 동작
+    async fetchChatList({ commit }) {
+      try {
+        const response = await axios.get('http://49.50.160.214:30005/api/chatroom/list');
+        const chatList = response.data.map(chat => ({
+          id: chat.id,
+          title: chat.title,
+        }));
+        commit('setChatList', chatList);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    // ====== [ resetNewChat ] ========
+    // ✅ 쿼리 날린 직후 동작 
+    resetNewChat({ commit }) {
+      commit('RESET_NEW_CHAT');
+    },
+
+    // ✅ /chat, /chat/:id 렌더링 전에 동작
+    resetChatDetail({ commit }) {
+      commit('RESET_CHAT_DETAIL');
+    }, 
+
+    // ✅ /chat, /chat/:id 렌더링 전에 동작
+    resetChatRoom({ commit }) {
+      commit('RESET_CHATROOM_ID');
+    },
+  },
+  getters: {},
+  modules: {}
+});
+
+export default store;
