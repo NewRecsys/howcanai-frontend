@@ -22,7 +22,6 @@ export default {
     ...mapState(['chatList']), // chatList 상태를 가져옴
   },
   beforeRouteEnter(to, from, next) {
-    store.dispatch('resetNewChat');
     store.dispatch('resetChatRoom');
     store.dispatch('fetchChatList')
       .then((chatList) => {

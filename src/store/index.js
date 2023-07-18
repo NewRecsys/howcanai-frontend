@@ -29,11 +29,11 @@ const store = createStore({
     ],
 
     // 현재 chatRoomId (/chat 이어도 id 존재함)
-    chatRoomId: 0,
+    chatRoomId: '',
 
     // 프론트엔드용 (유저가 새로 날린 쿼리)
     // TODO: newChat { }
-    newChatId: 0,         // 서버에서 받아오기 
+    newChatId: '',         // 서버에서 받아오기 
     newQuestion: '',      // 쿼리 날리자마자 갱신 
     newAnswer: '',        // 서버에서 받아오기 -> 안씀
     newReferences: [],    // 서버에서 받아오기 -> 안씀
@@ -90,7 +90,7 @@ const store = createStore({
     },
     // 채팅방 누르기 전 
     RESET_CHATROOM_ID(state) {
-      state.newChatId = 0;
+      state.newChatId = '';
     },
     // 채팅방 누르기 전
     RESET_CHAT_DETAIL(state) {
@@ -103,31 +103,31 @@ const store = createStore({
     //    1️) chatList에 New Chat을 push 하기
     //    2️) API로 불러온 chatRoomId로 설정
     //    3️) newQuestion 설정
-    async makeNewChat({ commit }, question ) {
+    async makeNewChat({ commit }, question ) { // TODO: 실행된 다음에 pushChatList -> 
       // 첫번째 쿼리를 타이틀로
       console.log('question:', question);
       const title = makeTruncatedText(question);
+      // try {
       try {
-        try {
-          const response = await axios.post('http://49.50.160.214:30005/api/chatroom/create', { 'title': title });
-          // 새로 만들어진 id로 지정
-          console.log(response.data);
+        const response = await axios.post('http://49.50.160.214:30005/api/chatroom/create', { 'title': title });
+        // 새로 만들어진 id로 지정
+        console.log(response.data);
 
-          const newChatId = response.data.chatroom_id; // 넘겨받은 id
-          console.log('newChatId:', newChatId);
+        const newChatId = response.data.chatroom_id; // 넘겨받은 id
+        console.log('newChatId:', newChatId);
 
-          commit('setNewChatId', newChatId); // this.newChatId = 넘겨받은 id
-          commit('setNewQuestion', question);
-          // chatList에 추가 
-          const newChatList = { id: newChatId, title: title };
-          console.log('newChatList', newChatList);
-          commit('pushChatList', newChatList);
-          console.log(store.state.chatList);
-        } catch (error) {
-          console.error(error);
-        }
-      } finally {
-        commit('RESET_NEW_CHAT');
+        commit('setNewChatId', newChatId); // this.newChatId = 넘겨받은 id
+        commit('setNewQuestion', question);
+        // 에러 확인: newQuestion 이 undefined
+        console.log('newQuestion', this.newQuestion);
+        // chatList에 추가 
+        const newChatList = { id: newChatId, title: title };
+        console.log('newChatList', newChatList);
+        commit('pushChatList', newChatList);
+        console.log(store.state.chatList);
+        console.log(store.state.chatDetail);
+      } catch (error) {
+        console.error(error);
       }
     },
 
@@ -157,7 +157,7 @@ const store = createStore({
         }
       } finally {
         // 임시 newQuestion, newChatID 초기화 
-        commit('RESET_NEW_CHAT');
+        commit('RESET_NEW_CHAT'); 
         // API 응답 완료 
         commit('setIsLoading', false);
         // 임시 말풍선 안 보이게

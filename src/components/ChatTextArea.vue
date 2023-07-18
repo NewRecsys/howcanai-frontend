@@ -28,10 +28,6 @@ export default {
   },
   methods: {
     ...mapActions(['makeNewChat', 'sendQuestion']),
-    // === hidePreQuestion: preQuestion 숨기기 (부모에게 보냄)
-    // hidePreQuestion() {
-    //   this.$emit('hide-prequestion');
-    // },
 
     resizeTextarea() {
       this.$nextTick(() => {
@@ -45,22 +41,35 @@ export default {
     },
 
     async handleEnterKey(event) {
-      // shift + enter
-      if (event.shiftKey) {
+      if (event.shiftKey) { // shift + enter
         this.userQuery += '\n';
+        
       } else { // enter
+        const userQuery = this.userQuery;
         event.preventDefault();
         console.log('this.$route.path === /chat', this.$route.path === '/chat');
         console.log('this.isFirst', this.isFirst);
 
         if (this.$route.path === '/chat') {
           if (this.isFirst) {
-            this.makeNewChat(this.userQuery)
+            // this.makeNewChat(this.userQuery)
+            this.makeNewChat(userQuery)
               .then(() => {
+
                 console.log('after make new chat', this.$store.state.newChatId);
                 console.log('after make new chat', this.newChatId);
+                console.log('after make new chat (query)', userQuery);
+                console.log('after make new chat (newQuestion)', this.$store.state.newQuestion);
+
                 this.$store.commit('setIsVisibleNewQuestion', true);
-                this.$router.push(`/chat/${this.$store.state.newChatId}`);
+                this.$router.push(`/chat/${this.newChatId}`);
+
+                // 서버로 질문 보내기 
+                this.sendQuestion({ chatRoomId: this.newChatId, question: userQuery})
+                .then(() => {
+                  // 답이 오면
+                  this.$store.commit('setIsVisibleNewQuestion', false);
+                })
               })
               .catch((error) => {
                 // 비동기 함수 실행 중 에러 처리
@@ -82,7 +91,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(['isFirst', 'newChatId']), // isVisibleNewQuestion
+    ...mapState(['isFirst', 'newChatId', 'newQuestion']), // isVisibleNewQuestion
   },
   created() {
     console.log('ChatTextArea 컴포넌트 생성');
