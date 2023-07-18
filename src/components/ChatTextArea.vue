@@ -43,7 +43,6 @@ export default {
     async handleEnterKey(event) {
       if (event.shiftKey) { // shift + enter
         this.userQuery += '\n';
-        
       } else { // enter
         const userQuery = this.userQuery;
         event.preventDefault();
@@ -52,7 +51,7 @@ export default {
 
         if (this.$route.path === '/chat') {
           if (this.isFirst) {
-            // this.makeNewChat(this.userQuery)
+            // TODO: 중복되는 부분 리팩토링 필요
             this.makeNewChat(userQuery)
               .then(() => {
 

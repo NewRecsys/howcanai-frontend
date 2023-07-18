@@ -79,7 +79,7 @@ const store = createStore({
     },
     // id, title 단위로 push
     pushChatList(state, newChatList) { // newChat update 용 
-      state.chatList.push(newChatList);
+      state.chatList.unshift(newChatList); // 맨 앞에 추가 
     },
     // 초기화
     RESET_NEW_CHAT(state) {
@@ -120,7 +120,7 @@ const store = createStore({
         commit('setNewQuestion', question);
         // 에러 확인: newQuestion 이 undefined
         console.log('newQuestion', this.newQuestion);
-        // chatList에 추가 
+        // 맨 앞에 push
         const newChatList = { id: newChatId, title: title };
         console.log('newChatList', newChatList);
         commit('pushChatList', newChatList);
