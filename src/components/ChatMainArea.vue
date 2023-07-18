@@ -74,13 +74,27 @@ export default {
   },
   
   watch: {
+    chatList: { // chatList 바뀌는지 감시 
+      handler() {
+        const chatRoomId = this.$route.params.id;
+        this.$store.dispatch('fetchChatDetail', chatRoomId)
+          .then(() => {
+            this.$store.commit('setIsFirst', true);
+          })
+          .catch(error => {
+            console.error(error);
+            // 에러 처리 로직
+          });
+      },
+      immediate: true // 컴포넌트가 생성될 때 즉시 watch를 실행
+    },
     '$store.state.chatDetail': {
       handler() {
         this.$nextTick(() => {this.scrollToBottom();});
       },
       deep: true
-    }
-  } 
+    },
+  }
 }
 </script>
 
