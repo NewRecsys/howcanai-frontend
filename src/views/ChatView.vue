@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import store from '../store/index.js';
+// import store from '../store/index.js';
 import { mapMutations, mapState } from 'vuex';
 import SideBar from '../components/SideBar.vue'
 import MainPage from '../components/MainPage.vue'
@@ -21,20 +21,20 @@ export default {
   computed: {
     ...mapState(['chatList']), // chatList 상태를 가져옴
   },
-  beforeRouteEnter(to, from, next) {
-    store.dispatch('resetChatRoom');
-    store.dispatch('fetchChatList')
-      .then((chatList) => {
-        next(vm => {
-          // 데이터를 가져온 후, ChatMainArea 컴포넌트에 전달
-          vm.chatList = chatList;
-        });
-      })
-      .catch(error => {
-        console.error(error);
-        next(false); // 라우트 진입을 중단하고 에러 처리
-      });
-  },
+  // beforeRouteEnter(to, from, next) {
+  //   store.dispatch('resetChatRoom');
+  //   store.dispatch('fetchChatList')
+  //     .then((chatList) => {
+  //       next(vm => {
+  //         // 데이터를 가져온 후, ChatMainArea 컴포넌트에 전달
+  //         vm.chatList = chatList;
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       next(false); // 라우트 진입을 중단하고 에러 처리
+  //     });
+  // },
 }
 </script>
 
