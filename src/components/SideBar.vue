@@ -20,9 +20,9 @@
     </div>
 
     <!-- History -->
-    <div class="chat-list-container">
+    <div class="chat-list-container" :key="this.$store.state.userModule.accessToken">
       <!-- test -->
-      <ChatHistory :contentText="contentText"></ChatHistory>
+      <!-- <ChatHistory :contentText="contentText"></ChatHistory> -->
       <!-- History 받아옴 -->
       <div v-for="chat in chatList" :key="chat.id">
         <router-link :to="`/chat/${chat.id}`">
@@ -31,11 +31,21 @@
       </div>
     </div>
 
-    <!-- TODO: 로그인 안 했으면 Sign in / 했으면 {{ username }} -->
-    <div class="user-container">
+    <!-- 로그인 안 하면 Sign in -->
+    <div v-if="!loggedIn" class="user-container">
       <router-link class="chat" to="/signin" style="display: inline-block; text-decoration: none;">
         <div class="new-chat-content">🔒&nbsp;&nbsp;&nbsp;Sign in</div>
       </router-link>
+    </div>
+    <!-- 로그인 하면 Sign out -->
+    <div v-else class="user-container">
+      <a 
+      class="chat" 
+      to="/chat" 
+      @click="submitLogout" 
+      style="display: inline-block; text-decoration: none;">
+        <div class="new-chat-content">🔑&nbsp;&nbsp;&nbsp;Sign out</div>
+      </a>
     </div>
   </div>
 </template>
@@ -57,16 +67,30 @@ export default {
   },
   computed: {
     ...mapState(['chatList']),
+    ...mapState('userModule', ['loggedIn']),
   },
   mounted() {
     this.fetchChatList();
   },
   methods: {
-    ...mapActions(['fetchChatList']),
+    ...mapActions(['fetchChatList', 'resetChatDetail', 'resetChatList']),
+    ...mapActions('userModule', ['logout']),
 
-    resetChatDetail() {
-      this.$store.dispatch('resetChatDetail');
-    }
+    // resetChatDetail() {
+    //   this.$store.dispatch('resetChatDetail');
+    // },
+
+    async submitLogout() {
+      try {
+        await this.logout();
+        alert('로그아웃 성공!');
+        // resetChatList -> /chat 으로 이동 
+        await this.resetChatList();
+        this.$router.push('/chat');
+      } catch (error) {
+        alert('로그아웃 실패' + error.message);
+      }
+    },
 
   },
 }

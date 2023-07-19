@@ -2,6 +2,7 @@
 <!-- <p style="color: white;">{{ isFirst }}</p>
 <p style="color: white;">{{ chatDetail }}</p>
 <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
+<!-- <p style="color: white;">{{ this.$store.state.userModule.accessToken ?? 'undefined'}}</p> -->
 
 <!-- pre-question 뭉탱이로 component 화 -->
 <div  v-if="isFirst" 

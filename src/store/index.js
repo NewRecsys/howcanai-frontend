@@ -3,6 +3,7 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 import { makeTruncatedText } from '../utils.js';
+import userModule from './user.js';
 
 const store = createStore({
   state: {
@@ -88,6 +89,10 @@ const store = createStore({
       state.newReferences = []; 
       state.isVisibleNewQuestion = false;
     },
+    // 로그인 정보 달라질 때
+    RESET_CHAT_LIST(state) {
+      state.chatList = [];
+    },
     // 채팅방 누르기 전 
     RESET_CHATROOM_ID(state) {
       state.newChatId = '';
@@ -107,9 +112,10 @@ const store = createStore({
       // 첫번째 쿼리를 타이틀로
       console.log('question:', question);
       const title = makeTruncatedText(question);
+      console.log('after makeTruncatedText title', title)
       // try {
       try {
-        const response = await axios.post('http://49.50.160.214:30005/api/chatroom/create', { 'title': title });
+        const response = await axios.post('/chatroom/create', { 'title': title });
         // 새로 만들어진 id로 지정
         console.log(response.data);
 
@@ -141,7 +147,7 @@ const store = createStore({
       console.log('question:', question);
       try {
         try {
-          const response = await axios.post(`http://49.50.160.214:30005/api/qna/create/${chatRoomId}`, { 'query': question });
+          const response = await axios.post(`/qna/create/${chatRoomId}`, { 'query': question });
 
           const newChatDetail = {
             id: response.data.id,
@@ -171,7 +177,7 @@ const store = createStore({
     async fetchChatDetail({ commit, dispatch }, chatRoomId) {
       try {
         await dispatch('resetChatDetail');
-        const response = await axios.get(`http://49.50.160.214:30005/api/chatroom/detail/${chatRoomId}`);
+        const response = await axios.get(`/chatroom/detail/${chatRoomId}`);
         const chatDetail = response.data.qnas.map(qna => ({
           id: qna.id,
           question: qna.question,
@@ -187,14 +193,18 @@ const store = createStore({
     // ====== [ fetchChatList ] ========
     // chatList (SideBar의 History) 해당하는 데이터 불러옴
     // ✅ /chat 처음 누를 때 동작
-    async fetchChatList({ commit }) {
+    async fetchChatList({ commit, state }) {
       try {
-        const response = await axios.get('http://49.50.160.214:30005/api/chatroom/list');
+        const response = await axios.get('/chatroom/list');
+        console.log(response.data);
         const chatList = response.data.map(chat => ({
           id: chat.id,
           title: chat.title,
         }));
+        console.log('fetchChatList - chatList', chatList);
         commit('setChatList', chatList);
+        console.log('fetchChatList(after commit) - state.chatList', state.chatList);
+
       } catch (error) {
         console.error(error);
       }
@@ -204,6 +214,11 @@ const store = createStore({
     // ✅ 쿼리 날린 직후 동작 
     resetNewChat({ commit }) {
       commit('RESET_NEW_CHAT');
+    },
+
+    // ✅ 로그인 정보 바뀔 때마다 동작 
+    resetChatList({ commit }) {
+      commit('RESET_CHAT_LIST');
     },
 
     // ✅ /chat, /chat/:id 렌더링 전에 동작
@@ -216,8 +231,14 @@ const store = createStore({
       commit('RESET_CHATROOM_ID');
     },
   },
-  getters: {},
-  modules: {}
+  getters: {
+    getChatList(state) {
+      return state.chatList;
+    },
+  },
+  modules: {
+    userModule: userModule,
+  }
 });
 
 export default store;

@@ -13,6 +13,8 @@
 
       <div class="submit-container">
         <button class="signin-button" type="submit">로그인</button>
+        <!-- 로그아웃 테스트 용 -->
+        <!-- <button class="signout-button" type="button" @click="submitLogout">로그아웃</button> -->
       </div>
 
     </form>
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -30,36 +32,36 @@ export default {
     };
   },
   methods: {
-    // 로그인 어떻게 구현? 
-    submitForm() {
-  const requestData = new URLSearchParams();
-  requestData.append('username', this.username);
-  requestData.append('password', this.password);
-
-  axios.post('http://49.50.160.214:30005/api/user/login', requestData, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
-  .then(response => {
-    const accessToken = response.data.access_token;
-    const tokenType = response.data.token_type;
-    const username = response.data.username;
-     // 로그인 정보를 로컬 스토리지에 저장
-    localStorage.setItem('access_token', accessToken);
-    // 로그인 성공 처리 로직 작성
-    console.log(`로그인 성공! Access Token: ${accessToken}`);
-    console.log(`Token Type: ${tokenType}`);
-    console.log(`Username: ${username}`);
-
-    // 로그인 성공 후 리다이렉트 또는 다른 작업 수행
-  })
-  .catch(error => {
-    // 로그인 실패 처리 로직 작성
-    console.error('로그인 실패!', error);
-    
-  });
-}
+    ...mapActions(['resetChatList', 'fetchChatList']),
+    ...mapActions('userModule', ['login', 'logout']),
+    // 폼 제출
+    async submitForm() {
+      try {
+        await this.login({
+          username: this.username,
+          password: this.password,
+        });
+        this.resetChatList();
+        await this.fetchChatList();
+        alert('로그인 성공!');
+        // TODO: 이동 전에 chatList fetch 해오기 
+        // this.resetChatList();
+        // await this.fetchChatList();
+        console.log('chatList',this.$store.state.chatList);
+        this.$router.push('/chat');
+        console.log('chatList', this.$store.state.chatList);
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // async submitLogout() {
+    //   try {
+    //     await this.logout();
+    //     alert('로그아웃 성공!');
+    //   } catch (error) {
+    //     alert('로그아웃 실패' + error.message);
+    //   }
+    // }
   }
 }
 </script>

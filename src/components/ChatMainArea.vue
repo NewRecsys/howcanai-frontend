@@ -36,13 +36,13 @@ export default {
     chatId: String
   },
   computed: {
-    ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail']),
+    ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail','isFirst']),
     newChatData() {
       return this.$store.state.newChat;
     },
-    isFirst() {
-      return this.$store.getters.isFirst;
-    },
+    // isFirst() {
+    //   return this.$store.getters.isFirst;
+    // },
   },
   mounted() {
     console.log('Mounted - chatArea:', this.$refs.chatArea);

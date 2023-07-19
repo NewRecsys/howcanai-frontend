@@ -59,7 +59,7 @@ export default {
       
       // 백엔드로 데이터 전송
       // 가입처리 URL로 POST 요청
-      axios.post('http://49.50.160.214:30005/api/user/create', formData)
+      axios.post('/user/create', formData)
         .then(response => {
           // 요청이 성공한 경우 처리 로직 작성
           console.log(response.data);
