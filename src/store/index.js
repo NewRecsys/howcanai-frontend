@@ -3,6 +3,7 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 import { makeTruncatedText } from '../utils.js';
+import userModule from './user.js';
 
 const store = createStore({
   state: {
@@ -216,8 +217,10 @@ const store = createStore({
       commit('RESET_CHATROOM_ID');
     },
   },
-  getters: {},
-  modules: {}
+  // getters: {},
+  modules: {
+    userModule: userModule,
+  }
 });
 
 export default store;
