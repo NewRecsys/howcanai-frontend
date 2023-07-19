@@ -25,7 +25,7 @@ const routes = [
     path: "/chat",
     component: ChatView,
     beforeEnter: (to, from, next) => {
-      store.dispatch('resetNewChat');
+      // store.dispatch('resetNewChat');
       store.dispatch('resetChatRoom');
       store.dispatch('fetchChatList')
         .then(() => {

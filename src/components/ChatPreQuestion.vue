@@ -1,14 +1,12 @@
 <template>
-<p style="color: white;">{{ isFirst }}</p>
+<!-- <p style="color: white;">{{ isFirst }}</p>
 <p style="color: white;">{{ chatDetail }}</p>
-<p style="color: white;">{{ chatDetail }}</p>
-<p style="color: white;">{{ chatDetail }}</p>
-<p style="color: white;">{{ this.$route.path === '/chat' }}</p>
+<p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
 
 <!-- pre-question 뭉탱이로 component 화 -->
 <div  v-if="isFirst" 
-      style="background: rgb(30, 30, 30); 
-              height: 60vh; margin:42px; 
+      style="background: #000000; 
+              height: 50vh; margin:42px; 
               border-radius: 24px; 
               color: white;
               text-align: center;">
@@ -21,8 +19,8 @@
     @click="commitPreQuestion(q)">
       <div class="prequestion-inner">{{ q }}</div>
     </div>
-    <!-- 🐞 TODO: /chat 에서 처음 쿼리 날릴 때 로드 안됨  -->
-    <!-- 🐞 비동기 처리 등등 더 해야될 듯? -->
+    <!-- 🐞🛠️ Fixed : /chat 에서 처음 쿼리 날릴 때 로드 안됨  -->
+    <!-- 🐞🛠️ 비동기 처리 등등 더 해야될 듯? -->
     <ChatQuestion 
     v-if="isVisibleNewQuestion"
     :question="newQuestion" />
@@ -64,14 +62,25 @@ export default {
     };
   },
   computed: {
-    ...mapState(['commonPreQuestions', 'isVisibleNewQuestion', 'newQuestion', 'chatDetail', 'isFirst']),
+    ...mapState(['commonPreQuestions', 'isVisibleNewQuestion', 'newChatId', 'newQuestion', 'chatDetail', 'isFirst']),
   },
   methods: {
-    ...mapActions(['makeNewChat']),
+    ...mapActions(['makeNewChat', 'sendQuestion']),
 
     commitPreQuestion(question) {
-      this.makeNewChat(question);
-      this.$store.commit('setIsFirst', false);
+      this.makeNewChat(question)
+      .then(() => {
+        this.$store.commit('setIsVisibleNewQuestion', true);
+        this.$router.push(`/chat/${this.newChatId}`);
+
+        this.sendQuestion({ chatRoomId: this.newChatId, question: question })
+        .then(() => {
+          this.$store.commit('setIsVisibleNewQuestion', false);
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
   },
 }
@@ -92,8 +101,8 @@ export default {
   align-items: center;
   gap: 10px;
   border-radius: 24px;
-  border: 0px solid #9747FF;
-  background: rgb(30, 30, 30);
+  border: 1px solid #9747FF;
+  background: #000000;
 
   color: #9747FF;
   font-size: 16px;

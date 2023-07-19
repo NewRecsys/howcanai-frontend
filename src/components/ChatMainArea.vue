@@ -1,8 +1,9 @@
 <template>
   <!-- text -->
-  <p style="color: white;">{{ isFirst }}</p>
+  <!-- <p style="color: white;">{{ isFirst }}</p>
   <p style="color: white;">{{ chatDetail }}</p>
-  <p style="color: white;">{{ this.$route.path === '/chat' }}</p>
+  <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
+  
   <!-- 현재 채팅방의 모든 QnA -->
   <div class="qna" v-for="chat in chatDetail" :key="chat.id" ref="chatArea">
     <ChatQuestion :question="chat.question" />
@@ -15,18 +16,21 @@
   <ChatQuestion 
     v-if="isVisibleNewQuestion"
     :question="newQuestion" />
+  <LoadingSpinner v-if="isLoading"/>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import ChatQuestion from './ChatQuestion.vue';
 import ChatAnswer from './ChatAnswer.vue';
+import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
   name: 'ChatMainArea',
   components: {
     ChatQuestion,
     ChatAnswer,
+    LoadingSpinner,
   },
   props: {
     chatId: String
@@ -41,6 +45,7 @@ export default {
     },
   },
   mounted() {
+    console.log('Mounted - chatArea:', this.$refs.chatArea);
     this.setupScrollObserver();
     this.scrollToBottom();
   },
@@ -61,14 +66,16 @@ export default {
     },
     setupScrollObserver() {
       const observer = new MutationObserver(() => {
+        console.log('MutationObserver - Chat content changed');
         this.scrollToBottom();
       });
       const chatArea = this.$refs.chatArea;
       if (chatArea instanceof Node) {
         observer.observe(chatArea, {
-          childList: true,
-          subtree: true,
+          childList: true, // 삭제?
+          subtree: true,   // 삭제?
         });
+        this.scrollToBottom(); // 초기 로딩 스크롤 조절
       }
     },
   },
