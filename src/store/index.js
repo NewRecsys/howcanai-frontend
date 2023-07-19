@@ -112,9 +112,10 @@ const store = createStore({
       // 첫번째 쿼리를 타이틀로
       console.log('question:', question);
       const title = makeTruncatedText(question);
+      console.log('after makeTruncatedText title', title)
       // try {
       try {
-        const response = await axios.post('http://49.50.160.214:30005/api/chatroom/create', { 'title': title });
+        const response = await axios.post('/chatroom/create', { 'title': title });
         // 새로 만들어진 id로 지정
         console.log(response.data);
 
@@ -146,7 +147,7 @@ const store = createStore({
       console.log('question:', question);
       try {
         try {
-          const response = await axios.post(`http://49.50.160.214:30005/api/qna/create/${chatRoomId}`, { 'query': question });
+          const response = await axios.post(`/qna/create/${chatRoomId}`, { 'query': question });
 
           const newChatDetail = {
             id: response.data.id,
@@ -176,7 +177,7 @@ const store = createStore({
     async fetchChatDetail({ commit, dispatch }, chatRoomId) {
       try {
         await dispatch('resetChatDetail');
-        const response = await axios.get(`http://49.50.160.214:30005/api/chatroom/detail/${chatRoomId}`);
+        const response = await axios.get(`/chatroom/detail/${chatRoomId}`);
         const chatDetail = response.data.qnas.map(qna => ({
           id: qna.id,
           question: qna.question,
@@ -194,7 +195,7 @@ const store = createStore({
     // ✅ /chat 처음 누를 때 동작
     async fetchChatList({ commit, state }) {
       try {
-        const response = await axios.get('http://49.50.160.214:30005/api/chatroom/list');
+        const response = await axios.get('/chatroom/list');
         console.log(response.data);
         const chatList = response.data.map(chat => ({
           id: chat.id,
