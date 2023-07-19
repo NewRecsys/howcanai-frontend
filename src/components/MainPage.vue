@@ -1,7 +1,8 @@
 <template>
   <!-- main area -->
   <div class="main">
-    <div class="chat-area" ref="chatArea">
+    <!-- <div class="chat-area" ref="chatArea"> -->
+    <div class="chat-area" >
       <ChatPreQuestion v-if="!this.$route.params.id"/>
       <router-view :chatId="this.$route.params.id" :key="this.$route.fullPath"></router-view>
     </div>

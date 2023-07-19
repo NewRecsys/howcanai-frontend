@@ -14,7 +14,7 @@
       <div class="submit-container">
         <button class="signin-button" type="submit">로그인</button>
         <!-- 로그아웃 테스트 용 -->
-        <button class="signout-button" type="button" @click="submitLogout">로그아웃</button>
+        <!-- <button class="signout-button" type="button" @click="submitLogout">로그아웃</button> -->
       </div>
 
     </form>
@@ -54,14 +54,14 @@ export default {
         alert(error.message);
       }
     },
-    async submitLogout() {
-      try {
-        await this.logout();
-        alert('로그아웃 성공!');
-      } catch (error) {
-        alert('로그아웃 실패' + error.message);
-      }
-    }
+    // async submitLogout() {
+    //   try {
+    //     await this.logout();
+    //     alert('로그아웃 성공!');
+    //   } catch (error) {
+    //     alert('로그아웃 실패' + error.message);
+    //   }
+    // }
   }
 }
 </script>

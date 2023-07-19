@@ -21,26 +21,30 @@ const userModule = {
   actions: {
     async login({ commit, state }, { username, password }) {
       try {
+        console.log('start login - chatList', state.chatList);
         const requestData = new URLSearchParams();
         requestData.append('username', username);
         requestData.append('password', password);
         
         console.log('Request data:', requestData.toString()); // requestData 출력
 
-        const response = await axios.post('http://49.50.160.214:30005/api/user/login', requestData, {
+        const response = await axios.post('/user/login', requestData, {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
         });
 
         console.log('Response data:', response.data); // 응답 데이터 출력
+        console.log('after API - chatList', state.chatList);
 
         const accessToken = response.data.access_token;
         commit('SET_ACCESS_TOKEN', accessToken);
         localStorage.setItem('access_token', accessToken);
+        console.log('after commit token - chatList', state.chatList);
 
         console.log('Access token:', accessToken);  // access_token 출력
         console.log('Current state:', state); // 현재 스토어 상태 출력
+        console.log('end login - chatList', state.chatList);
 
 
         return response;
@@ -50,12 +54,15 @@ const userModule = {
       }
     },
     logout({ commit, state }) {
-      console.log('before logout - state', state.access_token);
+      console.log('before logout - state', state.accessToken);
       console.log('before logout - login?', state.loggedIn);
+      console.log('before logout - chatList', state.chatList);
       localStorage.removeItem('access_token');
       commit('LOGOUT');
-      console.log('after logout - state', state.access_token);
+      console.log('after logout - state', state.accessToken);
       console.log('after logout - login?', state.loggedIn);
+      console.log('after logout - chatList', state.chatList);
+
     }
   },
 };
