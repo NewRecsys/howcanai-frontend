@@ -42,6 +42,8 @@ const userModule = {
         localStorage.setItem('access_token', accessToken);
         console.log('after commit token - chatList', state.chatList);
 
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
         console.log('Access token:', accessToken);  // access_token 출력
         console.log('Current state:', state); // 현재 스토어 상태 출력
         console.log('end login - chatList', state.chatList);
@@ -59,6 +61,7 @@ const userModule = {
       console.log('before logout - chatList', state.chatList);
       localStorage.removeItem('access_token');
       commit('LOGOUT');
+      delete axios.defaults.headers.common['Authorization'];
       console.log('after logout - state', state.accessToken);
       console.log('after logout - login?', state.loggedIn);
       console.log('after logout - chatList', state.chatList);
