@@ -136,7 +136,7 @@ export default {
   text-align: left;
   flex-shrink: 0;
   color: #ececec;
-  font-size: 14px;
+  font-size: 12px;
   font-family: Montserrat;
   font-style: normal;
   font-weight: 400;
@@ -180,6 +180,7 @@ export default {
   border-radius: 24px;
   background: rgb(30, 30, 30);
   overflow: hidden;
+  margin-bottom: 8px;
   cursor: pointer;
 }
 
