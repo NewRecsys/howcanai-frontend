@@ -1,4 +1,12 @@
 <template>
+  <!-- 로그인 모달창 -->
+  <div v-show="showSignInModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" @click.stop="showSignInModal = false">X</button>
+      <SignInView />
+    </div>
+  </div>
+
   <div class="sidebar-container">
     <!-- 로고 -->
     <div class="logo-container">
@@ -33,17 +41,13 @@
 
     <!-- 로그인 안 하면 Sign in -->
     <div v-if="!loggedIn" class="user-container">
-      <router-link class="chat" to="/signin" style="display: inline-block; text-decoration: none;">
+      <button class="chat signin-btn" @click.stop="showSignInModal = true">
         <div class="new-chat-content">🔒&nbsp;&nbsp;&nbsp;Sign in</div>
-      </router-link>
+      </button>
     </div>
     <!-- 로그인 하면 Sign out -->
     <div v-else class="user-container">
-      <a 
-      class="chat" 
-      to="/chat" 
-      @click="submitLogout" 
-      style="display: inline-block; text-decoration: none;">
+      <a class="chat" to="/chat" @click="submitLogout" style="display: inline-block; text-decoration: none;">
         <div class="new-chat-content">🔑&nbsp;&nbsp;&nbsp;Sign out</div>
       </a>
     </div>
@@ -53,16 +57,19 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import ChatHistory from './ChatHistory.vue';
+import SignInView from '../views/SignInView.vue';
 
 export default {
   name: 'SideBar',
   components: {
     ChatHistory,
+    SignInView,
   },
   data() {
     return {
       // test
-      contentText: '불닭볶음면이 중국시장에서 인기를 끌게 된 이유', 
+      contentText: '불닭볶음면이 중국시장에서 인기를 끌게 된 이유',
+      showSignInModal: false,
     };
   },
   computed: {
@@ -93,6 +100,15 @@ export default {
     },
 
   },
+  // 로그인을 성공했을 때 모달창이 닫히도록 설정
+  watch: {
+    loggedIn(newValue) {
+      if (newValue) {
+        this.showSignInModal = false;
+
+      }
+    },
+  },
 }
 </script>
 
@@ -109,11 +125,13 @@ export default {
   padding: 0px;
   /* 수직으로 쌓이게 만들기 */
   /* display: block; */
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   /* overflow: ; */
 }
+
 .sidebar-container::-webkit-scrollbar {
   width: 0px;
 }
@@ -192,31 +210,88 @@ export default {
 
 
 .logo-container {
-  padding:16px 8px 8px 8px; 
+  padding: 16px 8px 8px 8px;
   border-bottom: 1px solid #232323;
   width: 220px;
 }
+
 .new-chat-container {
   padding: 16px 8px;
   width: 224px;
 }
+
 .side-bar-text {
-  color:darkgrey; font-size:12px; 
+  color: darkgrey;
+  font-size: 12px;
   padding: 10px;
   width: 216px;
 }
 
 .chat-list-container {
-  padding: 0px 8px 0px 8px; 
+  padding: 0px 8px 0px 8px;
   gap: 10px;
   flex: 1;
   width: 224px;
   overflow-y: auto;
 }
+
 .user-container {
-  padding: 16px 8px 0px 8px; 
+  padding: 16px 8px 0px 8px;
   gap: 10px;
   width: 224px;
   border-top: 1px solid #232323;
 }
-</style>
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background-color: black;
+  padding: 5px;
+  width: 90%;
+  height: 80%;
+  max-width: 600px;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid gray;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .modal-content {
+    width: 60%;
+    height: 70%;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-content {
+    width: 40%;
+    height: 60%;
+  }
+}
+
+.close-btn {
+  color: gray;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}</style>

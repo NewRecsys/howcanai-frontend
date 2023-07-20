@@ -45,6 +45,10 @@ export default {
         console.log('chatList', this.$store.state.chatList);
         this.$router.push('/chat');
         console.log('chatList', this.$store.state.chatList);
+
+        // bles: 로그인 성공했을 때 모달창의 입력 칸을 초기화하기
+        this.username = "";
+        this.password = "";
       } catch (error) {
         alert(error.message);
       }
@@ -76,7 +80,7 @@ export default {
   .logo-image {
     margin-top: 2rem;
     width: 70%;
-    max-width: 300px;
+    max-width: 230px;
     margin-bottom: 2rem;
   }
 
