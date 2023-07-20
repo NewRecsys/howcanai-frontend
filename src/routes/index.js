@@ -11,7 +11,8 @@ import SignInView from "../views/SignInView.vue";
 const routes = [
   {
     path: "/",
-    component: IndexView
+    component: IndexView,
+    redirect: '/chat' 
   },
   {
     path: "/signup",
