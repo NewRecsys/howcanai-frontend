@@ -105,6 +105,11 @@ export default {
     padding: 0.5rem 1rem;
     font-size: 1rem;
     cursor: pointer;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
   }
 
 
