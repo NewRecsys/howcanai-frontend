@@ -10,7 +10,10 @@
         <button class="signin-button" type="submit">Sign in</button>
         <!-- 로그아웃 테스트 용 -->
         <!-- <button class="signout-button" type="button" @click="submitLogout">로그아웃</button> -->
-      </div>
+      </div><br>
+      <hr color="gray" width="80%">
+      <button class="change-signup-button" type="button" @click="$emit('openSignUp')">Sign Up</button>
+
 
     </form>
   </div>
@@ -127,4 +130,30 @@ export default {
    display: flex;
    justify-content: right;
    width: 100%;
- }</style>
+ }
+ .change-signup-button {
+  background-color: rgb(181, 176, 176);
+  color: black;
+  width: 80%;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.change-signup-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+ 
+ </style>

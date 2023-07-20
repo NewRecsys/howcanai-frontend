@@ -3,7 +3,15 @@
   <div v-show="showSignInModal" class="modal">
     <div class="modal-content">
       <button class="close-btn" @click.stop="showSignInModal = false">X</button>
-      <SignInView />
+      <SignInView @openSignUp="showSignUpModal = true; showSignInModal = false" />
+    </div>
+  </div>
+
+  <!-- 회원가입 모달창 -->
+  <div v-show="showSignUpModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" @click.stop="showSignUpModal = false">X</button>
+      <SignUpView @signUpSuccess="showSignUpModal = false" />
     </div>
   </div>
 
@@ -41,9 +49,9 @@
 
     <!-- 로그인 안 하면 Sign in -->
     <div v-if="!loggedIn" class="user-container">
-      <button class="chat signin-btn" @click.stop="showSignInModal = true">
+      <a class="chat" @click.stop="showSignInModal = true;" style="display: inline-block; text-decoration: none;">
         <div class="new-chat-content">🔒&nbsp;&nbsp;&nbsp;Sign in</div>
-      </button>
+      </a>
     </div>
     <!-- 로그인 하면 Sign out -->
     <div v-else class="user-container">
@@ -58,18 +66,21 @@
 import { mapState, mapActions } from 'vuex';
 import ChatHistory from './ChatHistory.vue';
 import SignInView from '../views/SignInView.vue';
+import SignUpView from '../views/SignUpView.vue';
 
 export default {
   name: 'SideBar',
   components: {
     ChatHistory,
     SignInView,
+    SignUpView,
   },
   data() {
     return {
       // test
       contentText: '불닭볶음면이 중국시장에서 인기를 끌게 된 이유',
       showSignInModal: false,
+      showSignUpModal: false,
     };
   },
   computed: {
@@ -262,7 +273,7 @@ export default {
   width: 90%;
   height: 80%;
   max-width: 600px;
-  max-height: 400px;
+  max-height: 800px;
   overflow-y: auto;
   border: 2px solid gray;
   box-sizing: border-box;
