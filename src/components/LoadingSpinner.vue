@@ -1,11 +1,6 @@
 <template>
-<div class="chat-answer" style="width:74px; height: 26px;">
-  <div class="lds-ellipsis">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+<div style="height: 100%;">
+  <div class="chat-answer" style="width:60px; height: 24px;"><span class="loader"> </span></div>
 </div>
 </template>
 
@@ -16,60 +11,39 @@ export default {
 </script>
 
 <style>
-.lds-ellipsis {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.lds-ellipsis div {
-  position: absolute;
-  top: 36px;
-  width: 8px;
-  height: 8px;
+.loader, .loader:before, .loader:after {
   border-radius: 50%;
-  background: #ffffffd4;
-  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  width: 1.6em;
+  height: 1.6em;
+  top: -12px;
+  animation-fill-mode: both;
+  animation: bblFadInOut 1.8s infinite ease-in-out;
 }
-.lds-ellipsis div:nth-child(1) {
-  left: 8px;
-  animation: lds-ellipsis1 0.5s infinite;
+.loader {
+  color: #FFF;
+  font-size: 5px;
+  position: relative;
+  text-indent: -9999em;
+  transform: translateZ(0);
+  animation-delay: -0.16s;
 }
-.lds-ellipsis div:nth-child(2) {
-  left: 8px;
-  animation: lds-ellipsis2 0.5s infinite;
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 0;
 }
-.lds-ellipsis div:nth-child(3) {
-  left: 32px;
-  animation: lds-ellipsis2 0.5s infinite;
+.loader:before {
+  left: -3.5em;
+  animation-delay: -0.32s;
 }
-.lds-ellipsis div:nth-child(4) {
-  left: 56px;
-  animation: lds-ellipsis3 0.5s infinite;
+.loader:after {
+  left: 3.5em;
 }
-@keyframes lds-ellipsis1 {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes lds-ellipsis3 {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-@keyframes lds-ellipsis2 {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(24px, 0);
-  }
+
+@keyframes bblFadInOut {
+  0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
+  40% { box-shadow: 0 2.5em 0 0 }
 }
 
 </style>
