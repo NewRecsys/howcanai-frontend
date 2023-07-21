@@ -56,7 +56,7 @@ export default {
         .then(response => {
           // 요청이 성공한 경우 처리 로직 작성
           console.log(response.data);
-
+          this.goToSignIn();
           // // 모달창 닫히게 하기 위한 가입 성공 이벤트 발생
           // this.$emit('signUpSuccess');
           
@@ -70,7 +70,10 @@ export default {
           // 요청이 실패한 경우 처리 로직 작성
           console.error(error);
         });
-    }
+    },
+    async goToSignIn() {
+  this.$router.push('/signin/');
+}
   },
 }
 </script>
