@@ -1,7 +1,8 @@
 <template>
   <div class="signup-container">
-    <img src="../assets/howcanai_logo.svg" alt="Logo" class="logo-image" />
+    <a href="/chat"><img src="../assets/howcanai_logo.svg" alt="Logo" class="logo-image" /></a>
     <form @submit.prevent="submitForm">
+      <div class="signup-form">
       <div class="input-container">
         <input class="input-field" type="text" id="username" v-model="username" placeholder="username" required>
       </div>
@@ -14,6 +15,7 @@
       <div class="input-container">
         <input class="input-field" type="password" id="confirm_password" v-model="confirm_password"
           placeholder="check your password" required>
+      </div>
       </div>
       <div class="submit-container">
         <button class="signup-button" type="submit">submit</button>
@@ -55,8 +57,8 @@ export default {
           // 요청이 성공한 경우 처리 로직 작성
           console.log(response.data);
 
-          // 모달창 닫히게 하기 위한 가입 성공 이벤트 발생
-          this.$emit('signUpSuccess');
+          // // 모달창 닫히게 하기 위한 가입 성공 이벤트 발생
+          // this.$emit('signUpSuccess');
           
           // 가입 처리 완료 후 리셋
           this.username = '';
@@ -73,137 +75,78 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+html, body {
+  background-color: black;
+  font-family: Montserrat, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+}
+
 .signup-container {
-  width: 80%;
-  max-width: 680px;
-  min-height: 480px;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: black;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.logo-image {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 24px;
+}
+
+.signup-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
+  align-items: stretch;
+  width: 100%;
+  max-width: 360px;
 }
 
 .input-container {
-  display: flex;
-  padding: 6px;
-  justify-content: center;
-  align-items: center;
-  /* flex-shrink: 0; */
-  /* border-radius: 17px; */
-  /* background: #464646; */
+  margin-bottom: 10px;
 }
 
-.input-container input {
-  /* width: 580px;
-  height: 48px;
-  border-radius: 36px; */
-  color: #ECECEC;
-  border: 1px solid #979797;
-  background-color: transparent;
-  width: 300px;
-  height: 20px;
-  padding: 10px 30px;
-  font-size: 16px;
-  font-family: Montserrat;
+.input-field {
+  display: block;
+  min-width: 300px;
+  width: 100%;
+  background-color: black;
+  color: #fff;
+  padding: 8px 16px;
+  border: 1px solid #999;
+  border-radius: 15px;
+  font-family: Montserrat, sans-serif;
   font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  /* padding-left: 32px;
+  /* font-weight: 500; */
   font-size: 16px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  width: 300px;
-  height: 20px;
-  padding: 10px 30px; */
-  /* justify-content: center;
-  align-items: center;
-  gap: 10px; */
-  flex-shrink: 0;
-  border-radius: 20px;
-  /* background: #464646; */
+  box-sizing: border-box;
   outline: none;
-  opacity: 0.7;
-}
-
-.input-container input:focus {
-  color: white;
-  opacity: 1;
-  transition: 300ms;
-
-}
-
-.input-container input::placeholder {
-  color: #979797;
-  font-size: 14px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.input-container button {
-  /* width: 580px;
-  height: 48px;
-  border-radius: 36px; */
-  color: #ECECEC;
-  border: 1px solid #979797;
-  background-color: #979797;
-  width: 300px;
-  height: 20px;
-  padding: 10px 30px;
-  font-size: 16px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  /* padding-left: 32px;
-  font-size: 16px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  width: 300px;
-  height: 20px;
-  padding: 10px 30px; */
-  /* justify-content: center;
-  align-items: center;
-  gap: 10px; */
-  flex-shrink: 0;
-  border-radius: 20px;
-  /* background: #464646; */
-  outline: none;
-  opacity: 0.7;
 }
 
 .signup-button {
-  background-color: black;
-  color: darkgray;
-  border: 0;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  font-family: Montserrat;
+  /* margin-right: 0px; */
+  /* margin-left: 30px; */
+  background-color: #3d3939;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 15px;
+  color: #999;
+  font-family: Montserrat, sans-serif;
   font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.5px;
+  /* font-weight: 500; */
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
 }
 
 .signup-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background-color: #666;
 }
-
-.submit-container {
-  display: flex;
-  justify-content: right;
-  width: 100%;
-}</style>
+</style>
