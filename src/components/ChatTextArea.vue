@@ -1,7 +1,7 @@
 <template>
   <div class="chat-textarea-div" :style="{ height: textareaHeight + 'px' }">
+    <div class="chat-textarea-background">how can i</div>
     <textarea class="chat-textarea"
-      placeholder="how can i ..."
       v-model="userQuery"
       @keydown.enter.prevent="handleEnterKey"
       @input="resizeTextarea"
@@ -99,6 +99,12 @@ export default {
 </script>
 
 <style>
+  .chat-textarea-background {
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    color: gray;
+  }
   .chat-textarea-div {
     position: relative;
     max-height: 48px;
@@ -137,6 +143,7 @@ export default {
 
     resize: none;
     width: 100%;
+    margin-left: 176px;
   }
   .chat-textarea:focus {
       padding-top: 0px;
