@@ -3,26 +3,30 @@
   <div class="main">
     <!-- <div class="chat-area" ref="chatArea"> -->
     <div class="chat-area" >
-      <ChatPreQuestion v-if="!this.$route.params.id"/>
+      <!-- <ChatPreQuestion v-if="!this.$route.params.id"/> -->
+      <ChatStartPage v-if="!this.$route.params.id"/>
       <router-view :chatId="this.$route.params.id" :key="this.$route.fullPath"></router-view>
     </div>
     <!-- chat textarea -->
     <div class="input">
-      <ChatTextArea></ChatTextArea>
+      <ChatTextArea v-if="this.$route.params.id"></ChatTextArea>
       <!-- <ChatTextArea @hide-prequestion="hidePreQuestion"></ChatTextArea> -->
     </div>
   </div>
 </template>
 
 <script>
-import ChatPreQuestion from './ChatPreQuestion.vue';
+import ChatStartPage from './ChatStartPage.vue';
+// import ChatPreQuestion from './ChatPreQuestion.vue';
 import ChatTextArea from './ChatTextArea.vue';
 
 export default {
   name: 'MainPage',
   components: {
-    ChatPreQuestion,
+    ChatStartPage,
+    // ChatPreQuestion,
     ChatTextArea,
+
   },
 
   data() {
@@ -39,7 +43,7 @@ export default {
 </script>
 
 <style>
-  .main {
+  /* .main {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -48,6 +52,14 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100vh;
+  } */
+
+  .main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
   }
   
   .chat-area {

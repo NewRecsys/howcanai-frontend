@@ -1,60 +1,138 @@
 <template>
-  <SideBar></SideBar>
-  <MainPage></MainPage>
+  <div class="index-container">
+    <!-- TOP BAR -->
+    <div class="top">
+      <!-- top -->
+      <button class="sidebar-button" @click="openSideBar"
+      >{{ toggleButton }}</button>
+    </div>
+
+    <!-- SIDE BAR -->
+    <div class="sidebar-background" v-if="isSideBarOpen" @click="closeSideBar">
+      <div class="sidebar" :style="{ width: sideBarWidth + 'px'}" @click.stop>
+        <side-bar></side-bar>
+      </div>
+    </div>
+    <div class="side"><side-bar></side-bar></div>
+
+    <!-- MAIN PAGE -->
+    <div class="mainpart"><main-page></main-page></div>
+  </div>
 </template>
 
 <script>
-// import store from '../store/index.js';
-import { mapMutations, mapState } from 'vuex';
-import SideBar from '../components/SideBar.vue'
-import MainPage from '../components/MainPage.vue'
+import MainPage from '@/components/MainPage.vue';
+import SideBar from '@/components/SideBar.vue';
 
 export default {
-  name: 'App',
-  components: {
-    SideBar,
-    MainPage
+  components: { MainPage, SideBar },
+  name: "IndexView",
+  data() {
+    return {
+      isSideBarOpen: false,
+      sideBarWidth: 0,
+    }
   },
   methods: {
-    ...mapMutations(['addChat']),
+    openSideBar() {
+      this.isSideBarOpen = true;
+      this.sideBarWidth = 240;
+    },
+    closeSideBar() {
+      this.isSideBarOpen = false;
+      this.sideBarWidth = 0;
+    }
   },
   computed: {
-    ...mapState(['chatList']), // chatList 상태를 가져옴
-  },
-  // beforeRouteEnter(to, from, next) {
-  //   store.dispatch('resetChatRoom');
-  //   store.dispatch('fetchChatList')
-  //     .then((chatList) => {
-  //       next(vm => {
-  //         // 데이터를 가져온 후, ChatMainArea 컴포넌트에 전달
-  //         vm.chatList = chatList;
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //       next(false); // 라우트 진입을 중단하고 에러 처리
-  //     });
-  // },
-}
+    toggleButton() {
+      return this.isSideBarOpen ? '<' : '☰';
+    },
+  }
+};
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-#app {
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.5px;
+.sidebar-button {
+  color: white; 
+  height: 80%; 
+  font-size: 38px; 
+  background-color: #ffffff00; 
+  border-width: 0; 
+  cursor: pointer;
 }
 
-body {
-  background-color: black;
-  position: relative;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
+  .sidebar-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: #000000e4;
+  }
+  .sidebar {
+    position: fixed;
+    transition: 300ms;
+    position: fixed;
+    z-index: 100;
+  }
+  .index-container {
+    height: 100vh;
+  }
 
+  .top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 48px;
+    background-color: #000000;
+    z-index: 99;
+  }
+
+  .side {
+    position: fixed;
+    top: 48px;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    height: calc(100% - 48px);
+    background-color: #000000;
+  }
+
+  /* .mainpart {
+    margin-top: 88px;
+    margin-left: 240px;
+    height: calc(100% - 88px);
+    background-color: #e9ecef;
+  } */
+
+  .mainpart {
+    margin-top: 20px;
+    margin-left: 240px;
+    height: calc(100% - 68px);
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  @media (max-width: 859px) {
+    .side {
+      display: none;
+    }
+    .mainpart {
+      margin-left: 0;
+    }
+  }
+
+  @media (min-width: 860px) {
+    .top {
+      display: none;
+    }
+    .mainpart {
+      margin-top: 0;
+    }
+  }
 </style>

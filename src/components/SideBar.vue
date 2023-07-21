@@ -113,6 +113,7 @@ export default {
   align-items: center;
   justify-content: flex-start;
   /* overflow: ; */
+  z-index: 100;
 }
 .sidebar-container::-webkit-scrollbar {
   width: 0px;
