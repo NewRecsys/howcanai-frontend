@@ -70,6 +70,7 @@ export default {
 
 <style> 
   .signin-container {
+    z-index: 1000;
     width: 80%;
     max-width: 680px;
     min-height: 480px;
