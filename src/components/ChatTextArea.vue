@@ -105,7 +105,8 @@ export default {
     
     position: relative;
     max-height: 48px;
-    max-width: min(100%, 800px); /* max-width 이렇게 하면 최대 너비 */
+    max-width: max(100%, 800px);
+  
     padding: 12px 20px;
     align-items: center;
     gap: 10px;
