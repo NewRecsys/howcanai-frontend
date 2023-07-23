@@ -56,9 +56,12 @@ export default {
         .then(response => {
           // 요청이 성공한 경우 처리 로직 작성
           console.log(response.data);
+          alert("회원가입을 축하합니다!")
+
           this.goToSignIn();
           // // 모달창 닫히게 하기 위한 가입 성공 이벤트 발생
           // this.$emit('signUpSuccess');
+
           
           // 가입 처리 완료 후 리셋
           this.username = '';

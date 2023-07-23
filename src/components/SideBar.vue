@@ -83,7 +83,7 @@ export default {
     async submitLogout() {
       try {
         await this.logout();
-        alert('로그아웃 성공!');
+        // alert('로그아웃 성공!');
         // resetChatList -> /chat 으로 이동 
         await this.resetChatList();
         this.$router.push('/chat');
