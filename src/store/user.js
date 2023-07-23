@@ -6,6 +6,7 @@ const userModule = {
     accessToken: localStorage.getItem('access_token') || null,
     // 로그인 여부 확인
     loggedIn: localStorage.getItem('access_token') !== null,
+    username: '',
   },
   mutations: {
     SET_ACCESS_TOKEN(state, token) {
@@ -16,6 +17,10 @@ const userModule = {
     LOGOUT(state) {
       state.accessToken = null;
       state.loggedIn = false;
+    },
+
+    SET_USERNAME(state, username) {
+      state.username = username;
     }
   },
   actions: {
@@ -26,7 +31,11 @@ const userModule = {
         requestData.append('username', username);
         requestData.append('password', password);
         
+
         // console.log('Request data:', requestData.toString()); // requestData 출력
+
+        commit('SET_USERNAME', username);
+
 
         const response = await axios.post('/user/login', requestData, {
           headers: {

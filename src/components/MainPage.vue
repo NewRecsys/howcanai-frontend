@@ -1,8 +1,16 @@
 <template>
+  
   <!-- main area -->
   <div class="main">
+    
     <!-- <div class="chat-area" ref="chatArea"> -->
-    <div class="chat-area" >
+    <div class="chat-area">
+      <div v-if="$store.state.userModule.loggedIn">
+        <SignInComplete />
+      </div>
+      <div v-if="!$store.state.userModule.loggedIn">
+        <SignOutComplete />
+      </div>
       <!-- <ChatPreQuestion v-if="!this.$route.params.id"/> -->
       <ChatStartPage v-if="!this.$route.params.id"/>
       <router-view :chatId="this.$route.params.id" :key="this.$route.fullPath"></router-view>
@@ -18,6 +26,8 @@
 import ChatStartPage from './ChatStartPage.vue';
 // import ChatPreQuestion from './ChatPreQuestion.vue';
 import ChatTextArea from './ChatTextArea.vue';
+import SignInComplete from './SignInComplete.vue';
+import SignOutComplete from './SignOutComplete.vue';
 
 export default {
   name: 'MainPage',
@@ -25,19 +35,23 @@ export default {
     ChatStartPage,
     // ChatPreQuestion,
     ChatTextArea,
+    SignInComplete,
+    SignOutComplete
 
   },
 
   data() {
-    return {
-    };
-  },
+  return {
+  };
+},
   methods: {
-  },
+
+    },
   computed: {
   },
   watch: {
   },
+ 
 }
 </script>
 
