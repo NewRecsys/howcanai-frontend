@@ -3,7 +3,7 @@
     <textarea class="chat-textarea"
       placeholder="how can i ..."
       v-model="userQuery"
-      @keydown.enter.prevent="handleEnterKey"
+      @keypress.enter.prevent="handleEnterKey"
       @input="resizeTextarea"
       ref="textarea"
       :rows="textareaRows"
