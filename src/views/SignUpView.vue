@@ -1,6 +1,8 @@
 <template>
   <div class="signup-container">
-    <a href="/chat"><img src="../assets/howcanai_logo.svg" alt="Logo" class="logo-image" /></a>
+    <div class="sign-logo-container">
+      <a href="/chat"><img src="../assets/howcanai_logo.svg" alt="Logo" class="logo-image" /></a>
+    </div>
     <form @submit.prevent="submitForm">
       <div class="signup-form">
       <div class="input-container">
@@ -97,10 +99,13 @@ html, body {
   box-sizing: border-box;
 }
 
+/* .sign-logo-container {
+  margin: 40px;
+} */
 .logo-image {
   display: block;
   width: 100%;
-  max-width: 300px;
+  max-width: 260px;
   margin-bottom: 24px;
 }
 
@@ -122,34 +127,40 @@ html, body {
   width: 100%;
   background-color: black;
   color: #fff;
-  padding: 8px 16px;
+  /* padding: 8px 16px; */
+  padding: 12px 22px;
   border: 1px solid #999;
-  border-radius: 15px;
+  border-radius: 22px;
   font-family: Montserrat, sans-serif;
   font-style: normal;
   /* font-weight: 500; */
-  font-size: 16px;
+  font-size: 14px;
   box-sizing: border-box;
   outline: none;
 }
 
 .signup-button {
-  /* margin-right: 0px; */
-  /* margin-left: 30px; */
-  background-color: #3d3939;
-  padding: 8px 16px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin: 12px 0 0 0;
+  background-color: #3c3c3c;
+  /* padding: 8px 16px; */
+  padding: 12px 22px;
+
   border: none;
-  border-radius: 15px;
+  border-radius: 22px;
   color: #999;
   font-family: Montserrat, sans-serif;
   font-style: normal;
   /* font-weight: 500; */
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   width: 100%;
 }
 
 .signup-button:hover {
   background-color: #666;
+  color: #fff;
+  transition: 300ms;
 }
 </style>

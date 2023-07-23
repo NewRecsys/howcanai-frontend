@@ -108,14 +108,20 @@ export default {
   } */
 
   .mainpart {
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    margin-top: 0px;
+    /* margin-top: 0 으로 하면 스크롤 사라지는거 되는데 그러면 top bar 어떻게 바꿀지 생각해봐야 함... */
     margin-left: 240px;
-    height: calc(100% - 68px);
+    /* height: calc(100% - 68px); */
     background-color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
+
+    height: 100%;
+    /* box-sizing: border-box; */
+
   }
 
   @media (max-width: 859px) {
@@ -124,6 +130,12 @@ export default {
     }
     .mainpart {
       margin-left: 0;
+      margin-top: 0;
+    }
+    .signin-container, .signup-container {
+      flex-direction: column;
+      height: 100vh;
+      gap: 28px;
     }
   }
 

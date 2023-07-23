@@ -8,9 +8,8 @@
       <router-view :chatId="this.$route.params.id" :key="this.$route.fullPath"></router-view>
     </div>
     <!-- chat textarea -->
-    <div class="input">
-      <ChatTextArea v-if="this.$route.params.id"></ChatTextArea>
-      <!-- <ChatTextArea @hide-prequestion="hidePreQuestion"></ChatTextArea> -->
+    <div class="input" v-if="this.$route.params.id">
+      <ChatTextArea></ChatTextArea>
     </div>
   </div>
 </template>
@@ -63,9 +62,13 @@ export default {
   }
   
   .chat-area {
+    /* box-sizing: border-box; */
+
+
     flex-grow: 1;
     overflow-y: auto;
     padding: 12px;
+    /* padding: 0px; */
     display: flex;
     flex-direction: column;
   }

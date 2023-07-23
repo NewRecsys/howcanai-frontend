@@ -1,23 +1,22 @@
 <template>
   <div class="signin-container">
-    <a href="/chat"><img src="../assets/howcanai_logo.svg" alt="Logo" class="logo-image" /></a>
+    <div class="sign-logo-container">
+      <a href="/chat">
+        <img src="../assets/howcanai_logo.svg" alt="Logo" class="logo-image" />
+      </a>
+    </div>
+
     <form @submit.prevent="submitForm">
       <div class="signin-form">
-      <div class="input-container"><input class="input-field" type="text" id="username" v-model="username"
-          placeholder="username" required> </div>
-      <div class="input-container"><input class="input-field" type="password" id="password" v-model="password"
-          placeholder="password" required> </div>
-
-
-        </div>
-      <div class="submit-container">
-
-        <!-- 로그아웃 테스트 용 -->
-        <!-- <button class="signout-button" type="button" @click="submitLogout">로그아웃</button> -->
-        <button class="signup-button" type="button" @click="goToSignUp">Sign Up</button>
-        <button class="signin-button" type="submit">Sign in</button>
+        <div class="input-container"><input class="input-field" type="text" id="username" v-model="username"
+            placeholder="username" required> </div>
+        <div class="input-container"><input class="input-field" type="password" id="password" v-model="password"
+            placeholder="password" required> </div>
       </div>
-
+      <div class="submit-container">
+        <button class="signin-button" type="submit">sign in</button>
+        <button class="signup-button" type="button" @click="goToSignUp">sign up</button>
+      </div>
     </form>
   </div>
 </template>
@@ -89,12 +88,18 @@ html, body {
   background-color: black;
   padding: 0 16px;
   box-sizing: border-box;
+
+  /* gap: 40px; */
 }
+
+/* .sign-logo-container {
+  margin: 40px;
+} */
 
 .logo-image {
   display: block;
   width: 100%;
-  max-width: 300px;
+  max-width: 260px;
   margin-bottom: 24px;
 }
 
@@ -116,13 +121,15 @@ html, body {
   width: 100%;
   background-color: black;
   color: #fff;
-  padding: 8px 16px;
+  /* padding: 8px 16px; */
+  padding: 12px 22px;
   border: 1px solid #999;
-  border-radius: 15px;
+  /* border-radius: 15px; */
+  border-radius: 22px;
   font-family: Montserrat, sans-serif;
   font-style: normal;
   /* font-weight: 500; */
-  font-size: 16px;
+  font-size: 14px;
   box-sizing: border-box;
   outline: none;
 }
@@ -131,44 +138,55 @@ html, body {
   text-align: center;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
 }
 
 .signin-button {
   margin-right: 0px;
-  margin-left: 30px;
-  background-color: #3d3939;
-  padding: 8px 16px;
+  /* margin-left: 30px; */
+  margin-left: 0px;
+  background-color: #3c3c3c;
+  padding: 12px 22px;
   border: none;
-  border-radius: 15px;
+  border-radius: 22px;
   color: #999;
   font-family: Montserrat, sans-serif;
   font-style: normal;
   /* font-weight: 500; */
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   width: 100%;
 }
 
 .signin-button:hover {
   background-color: #666;
+  color: #fff;
+  transition: 300ms;
 }
 
 .signup-button {
-  margin-left: 16px;
+  margin-right: 0px;
+  /* margin-left: 30px; */
+  margin-left: 0px;
+  /* margin-left: 16px; */
   padding: 8px 16px;
   border: 1px solid black;
-  border-radius: 15px;
+  border-radius: 22px;
   background-color: black;
   color: #999;
   font-family: Montserrat, sans-serif;
   font-style: normal;
   /* font-weight: 500; */
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   width: 100%;
 }
 
 .signup-button:hover {
-  border: 1px solid #444;
+  /* border: 1px solid #444; */
+  color: #fff;
+  transition: 300ms;
 }
 </style>

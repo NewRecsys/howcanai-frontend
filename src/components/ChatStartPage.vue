@@ -19,7 +19,9 @@
   </div>
   <div>
     <span style="font-size: 48px; font-weight: 700;">how can</span>
-    <span style="color: #1c1c1c; font-size: 48px; font-weight: 700;">a</span>
+    <!-- <span style="color: #1c1c1c; font-size: 48px; font-weight: 700;">a</span> -->
+    <span style="color: #000000; font-size: 48px; font-weight: 700; text-shadow: -1.5px 0 #606060, 0 1.5px #606060, 1.5px 0 #606060, 0 -1.5px #606060;">a</span>
+    <!-- <img src="../assets/a.png"> -->
     <span style="font-size: 48px; font-weight: 700;">i</span>
   </div>
   <!-- <h1 style="font-size: 60px; margin-bottom: 0; line-height: 1.2;">how canai</h1> -->
