@@ -8,11 +8,13 @@
     </div>
 
     <!-- SIDE BAR -->
+    <!-- width < 860 -->
     <div class="sidebar-background" v-if="isSideBarOpen" @click="closeSideBar">
       <div class="sidebar" :style="{ width: sideBarWidth + 'px'}" @click.stop>
         <side-bar></side-bar>
       </div>
     </div>
+    <!-- width > 860 -->
     <div class="side"><side-bar></side-bar></div>
 
     <!-- MAIN PAGE -->
