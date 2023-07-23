@@ -31,8 +31,11 @@ const userModule = {
         requestData.append('username', username);
         requestData.append('password', password);
         
+
+        // console.log('Request data:', requestData.toString()); // requestData 출력
+
         commit('SET_USERNAME', username);
-        console.log('Request data:', requestData.toString()); // requestData 출력
+
 
         const response = await axios.post('/user/login', requestData, {
           headers: {
