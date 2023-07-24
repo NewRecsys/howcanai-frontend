@@ -33,8 +33,11 @@ body {
 ::-webkit-scrollbar {
   width: 0px;
 }
-
 @supports (-webkit-touch-callout: none) {
-  height: -webkit-fill-available;
+  /* 해당 브라우저가 -webkit-touch-callout 기능을 지원하는 경우 */
+  #app {
+    height: -webkit-fill-available;
+  }
 }
+
 </style>
