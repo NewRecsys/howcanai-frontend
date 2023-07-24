@@ -43,7 +43,7 @@ export default {
         });
         this.resetChatList();
         await this.fetchChatList();
-        alert('로그인 성공!');
+        // alert('로그인 성공!');
         // TODO: 이동 전에 chatList fetch 해오기 
         // this.resetChatList();
         // await this.fetchChatList();
@@ -57,9 +57,9 @@ export default {
     async submitLogout() {
       try {
         await this.logout();
-        alert('로그아웃 성공!');
+        // alert('로그아웃 성공!');
       } catch (error) {
-        alert('로그아웃 실패' + error.message);
+        // alert('로그아웃 실패' + error.message);
       }
     },
     async goToSignUp() {
