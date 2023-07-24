@@ -25,9 +25,16 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
+  /* mobile viewport bug fix */
+  /* min-height: 100vh;
+  min-height: -webkit-fill-available; */
 }
 
 ::-webkit-scrollbar {
   width: 0px;
+}
+
+@supports (-webkit-touch-callout: none) {
+  height: -webkit-fill-available;
 }
 </style>
