@@ -102,9 +102,9 @@ export default {
   top: 0px;
   left: 0;
   width: 240px;
-  /* height: 100vh; */
-  height: auto;
-  min-height: 100vh;
+  height: 100vh;
+  /* min-height: 100vh; */
+  /* min-height: -webkit-fill-available; */
   border: 1px solid #232323;
   background-color: #111111;
   color: #242424;
