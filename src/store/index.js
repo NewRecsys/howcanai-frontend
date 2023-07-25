@@ -4,6 +4,7 @@ import { createStore } from 'vuex';
 import axios from 'axios';
 import { makeTruncatedText } from '../utils.js';
 import userModule from './user.js';
+import layoutModule from './layout.js';
 
 const store = createStore({
   state: {
@@ -238,6 +239,7 @@ const store = createStore({
   },
   modules: {
     userModule: userModule,
+    layoutModule: layoutModule,
   }
 });
 

@@ -91,7 +91,6 @@ export default {
   word-break: break-all;
   display: inline-flex;
   max-width: 754px;
-  box-sizing: border-box;
   padding: 12px 20px;
   margin-top: 0px;
   justify-content: center;
