@@ -103,5 +103,6 @@ export default {
   
   .input {
     padding: 12px;
+    background-color: transparent;
   }
 </style>
