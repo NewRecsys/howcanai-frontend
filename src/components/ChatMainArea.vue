@@ -1,14 +1,15 @@
 <template>
   <!-- text -->
-  <!-- <p style="color: white;">{{ isFirst }}</p>
-  <p style="color: white;">{{ chatDetail }}</p>
-  <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
+  <p style="color: white;">{{ isFirst }}</p>
+  <p style="color: white;">{{ isTyping }}</p>
+  <p style="color: white;">{{ chatDetail.length }}</p>
+  <!-- <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
   
   <!-- 현재 채팅방의 모든 QnA -->
   <div class="qna" v-for="chat in chatDetail" :key="chat.id" ref="chatArea">
     <ChatQuestion :question="chat.question" />
     <ChatAnswer 
-    :typing="false" 
+    :typing=isTyping
     :answer="chat.answer" 
     :references="chat.references"/>
   </div>
@@ -20,7 +21,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import ChatQuestion from './ChatQuestion.vue';
 import ChatAnswer from './ChatAnswer.vue';
 import LoadingSpinner from './LoadingSpinner.vue';
@@ -37,23 +38,23 @@ export default {
   },
   computed: {
     ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail','isFirst']),
+    ...mapState('layoutModule', ['isTyping']),
     newChatData() {
       return this.$store.state.newChat;
     },
-    // isFirst() {
-    //   return this.$store.getters.isFirst;
-    // },
   },
   mounted() {
     console.log('Mounted - chatArea:', this.$refs.chatArea);
     this.setupScrollObserver();
     this.scrollToBottom();
   },
-  data() {
-    return {
-    };
-  },
+  // created() {
+  //   if (this.chatDetail.length > 0) {
+  //     this.resetTyping(); 
+  //   }
+  // },
   methods: {
+    ...mapActions('layoutModule', ['setTyping', 'resetTyping']),
     // 🐞 TODO: 자동 스크롤 안 되는 문제
     // 🐞 분명 어젯밤에는 됐음 이상함 ㅋㅋ;
     scrollToBottom() {
@@ -81,12 +82,30 @@ export default {
   },
   
   watch: {
+    // '$store.state.isFirst': {
+    //   handler(newValue, oldValue) {
+    //     console.log('oldValue: ', oldValue);
+    //     console.log('newValue: ', newValue);
+    //     // isFirst: true -> false 로 바뀌면 
+    //     // isTyping: true 로 설정
+    //     if (oldValue && !newValue) {
+    //       const lastIndex = this.chatDetail.length - 1;
+    //       console.log('lastIndex: ', lastIndex);
+    //       // this.$set(this.isTyping, lastIndex, true);
+    //       console.log('isTyping (before): ', this.isTyping);
+
+    //       this.setTyping();
+    //       // this.isTyping = true;
+    //       console.log('isTyping: (after)', this.isTyping);
+    //     }
+    //   },
+    // },
     chatList: { // chatList 바뀌는지 감시 
       handler() {
         const chatRoomId = this.$route.params.id;
         this.$store.dispatch('fetchChatDetail', chatRoomId)
           .then(() => {
-            this.$store.commit('setIsFirst', true);
+            // this.$store.commit('setIsFirst', true);
           })
           .catch(error => {
             console.error(error);

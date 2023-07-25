@@ -2,14 +2,14 @@
   <div class="sidebar-container">
     <!-- 로고 -->
     <div class="logo-container">
-      <router-link to="/chat" @click="resetChatDetail">
+      <router-link to="/chat" @click="handleNewChatButton">
         <img id="sideLogo" alt="howcan.ai side logo" src="../assets/sideLogo.svg">
       </router-link>
     </div>
 
     <!-- New Chat 버튼 -->
     <div class="new-chat-container" style="">
-      <router-link class="chat" to="/chat" style="display: inline-block; text-decoration: none;" @click="resetChatDetail">
+      <router-link class="chat" to="/chat" style="display: inline-block; text-decoration: none;" @click="handleNewChatButton">
         <div class="new-chat-content">✨&nbsp;&nbsp;&nbsp;Start New</div>
       </router-link>
     </div>
@@ -24,7 +24,7 @@
       <!-- test -->
       <!-- <ChatHistory :contentText="contentText"></ChatHistory> -->
       <!-- History 받아옴 -->
-      <div v-for="chat in chatList" :key="chat.id" @click="closeSideBar">
+      <div v-for="chat in chatList" :key="chat.id" @click="handleChatListButton">
         <router-link :to="`/chat/${chat.id}`">
           <ChatHistory :contentText="chat.title"></ChatHistory>
         </router-link>
@@ -42,7 +42,7 @@
       <a 
       class="chat" 
       to="/chat" 
-      @click="submitLogout" 
+      @click="handleSignButton" 
       style="display: inline-block; text-decoration: none;">
         <div class="new-chat-content">🔑&nbsp;&nbsp;&nbsp;Sign out</div>
       </a>
@@ -73,9 +73,32 @@ export default {
     this.fetchChatList();
   },
   methods: {
-    ...mapActions(['fetchChatList', 'resetChatDetail', 'resetChatList']),
+    ...mapActions(['fetchChatList', 'resetChatDetail', 'resetChatList', 'setIsFirstTrue']),
     ...mapActions('userModule', ['logout']),
-    ...mapActions('layoutModule', ['closeSideBar']),
+    ...mapActions('layoutModule', ['closeSideBar','setTyping', 'resetTyping']),
+
+
+    handleNewChatButton() {
+      this.setIsFirstTrue();
+      this.resetChatDetail();
+      this.setTyping();
+      this.closeSideBar();
+    },
+
+    handleChatListButton() {
+      this.setIsFirstTrue();
+      this.resetTyping();
+      this.closeSideBar();
+    },
+
+    handleSignButton() {
+      this.setIsFirstTrue();
+      this.resetChatDetail();
+      this.setTyping();
+      this.submitLogout();
+      this.closeSideBar();
+    },
+
 
     // resetChatDetail() {
     //   this.$store.dispatch('resetChatDetail');

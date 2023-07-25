@@ -3,6 +3,7 @@ const layoutModule = {
   state: {
     isSideBarOpen: false,
     sideBarWidth: 0,
+    isTyping: false // 처음은 typing 안 함 
   },
   mutations: {
     OPEN_SIDEBAR(state) {
@@ -12,7 +13,10 @@ const layoutModule = {
     CLOSE_SIDEBAR(state) {
       state.isSideBarOpen = false;
       state.sideBarWidth = 0;
-    }
+    },
+    SET_ISTYPING(state, bool) {
+      state.isTyping = bool;
+    },
   },
   actions: {
     openSideBar({ commit }) {
@@ -20,7 +24,13 @@ const layoutModule = {
     },
     closeSideBar({ commit }) {
       commit('CLOSE_SIDEBAR');
-    }
+    },
+    setTyping({ commit }) {
+      commit('SET_ISTYPING', true);
+    },
+    resetTyping({ commit }) {
+      commit('SET_ISTYPING', false);
+    },
   },
 };
 

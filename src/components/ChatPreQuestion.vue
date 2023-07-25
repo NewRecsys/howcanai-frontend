@@ -58,13 +58,17 @@
       ...mapState(['commonPreQuestions', 'isVisibleNewQuestion', 'newChatId', 'newQuestion', 'chatDetail', 'isFirst']),
     },
     methods: {
-      ...mapActions(['makeNewChat', 'sendQuestion']),
+      ...mapActions(['makeNewChat', 'sendQuestion', 'setIsFirstFalse']),
+      ...mapActions('layoutModule', ['setTyping']),
   
       commitPreQuestion(question) {
         this.makeNewChat(question)
         .then(() => {
           this.$store.commit('setIsVisibleNewQuestion', true);
           this.$router.push(`/chat/${this.newChatId}`);
+          // 첫번째 쿼리 날리면 isFirst=false, isTyping=true
+          this.setIsFirstFalse();
+          this.setTyping();
   
           this.sendQuestion({ chatRoomId: this.newChatId, question: question })
           .then(() => {

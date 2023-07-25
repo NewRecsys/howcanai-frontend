@@ -1,7 +1,9 @@
 <template>
-<!-- <p style="color: white;">{{ isFirst }}</p>
-<p style="color: white;">{{ chatDetail }}</p>
-<p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
+<p style="color: white;">isFirst: {{ isFirst }}</p>
+<p style="color: white;">{{ isTyping }}</p>
+<p style="color: white;">{{ chatDetail.length }}</p>
+<!-- <p style="color: white;">{{ chatDetail }}</p> -->
+<!-- <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
 <!-- <p style="color: white;">{{ this.$store.state.userModule.accessToken ?? 'undefined'}}</p> -->
 
 <!-- pre-question 뭉탱이로 component 화 -->
@@ -64,15 +66,20 @@ export default {
   },
   computed: {
     ...mapState(['commonPreQuestions', 'isVisibleNewQuestion', 'newChatId', 'newQuestion', 'chatDetail', 'isFirst']),
+    ...mapState('layoutModule', ['isTyping', 'setTyping']),
   },
   methods: {
-    ...mapActions(['makeNewChat', 'sendQuestion']),
+    ...mapActions(['makeNewChat', 'sendQuestion', 'setIsFirstFalse']),
+    ...mapActions('layoutModule', ['setTyping', 'resetTyping']),
 
     commitPreQuestion(question) {
       this.makeNewChat(question)
       .then(() => {
         this.$store.commit('setIsVisibleNewQuestion', true);
         this.$router.push(`/chat/${this.newChatId}`);
+        // 첫번째 쿼리 날리면 isFirst=false, isTyping=true
+        this.setIsFirstFalse();
+        this.setTyping();
 
         this.sendQuestion({ chatRoomId: this.newChatId, question: question })
         .then(() => {

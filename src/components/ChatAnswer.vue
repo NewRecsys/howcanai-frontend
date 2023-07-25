@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- test -->
+    <!-- <p style="color: #fff">{{ isVisible }}</p> -->
     <div class="chat-answer" v-html="typedText">
     </div>
       <div v-if="isVisible" style="transition: 300ms;">
@@ -32,21 +34,17 @@ export default {
       isTyping: false,
       typedText: "",
       index: 0,
-      intervalId: null
+      intervalId: null,
+      isVisible: true,
     };
-  },
-  computed: {
-    isVisible() {
-      if (this.typing) {
-        return false
-      } else {
-        return true
-      }
-    },
   },
   created() {
     if (this.typing) {
-      this.startTyping();
+      this.isVisible = false;
+      // 타이핑 끝난 후 isVisible true 로 설정
+      this.startTyping().then(() => {
+        this.isVisible = true;
+      });
     } else {
       this.typedText = this.answer;
     }
@@ -58,27 +56,30 @@ export default {
     },
   },
   methods: {
-    showComponent() {
-      this.isVisible = true;
-    },
+    // showComponent() {
+    //   this.isVisible = true;
+    // },
     // 🐞 TODO: true 로 해놓으면 전체 QnA 쌍에 대해 되는데..
     // 🐞 지금은 정신 사나와서 걍 false
     // 🐞 만약 이 효과 할거면 마지막 answer에 대해서만 적용하도록 해야됨 -> 여기서 $store.state.newAnswer 필요할 듯 
-    startTyping() {
+    async startTyping() { // startTyping 메서드를 비동기 함수로 수정
       // 인터벌 시작
       if (this.isTyping) {
         clearInterval(this.intervalId);
       } else {
-        this.intervalId = setInterval(() => {
-          this.typedText += this.answer[this.index]; // 현재 인덱스의 글자를 출력 중인 텍스트에 추가
-          this.index++; // 인덱스 증가a
+        return new Promise((resolve) => {
+          this.intervalId = setInterval(() => {
+            this.typedText += this.answer[this.index]; // 현재 인덱스의 글자를 출력 중인 텍스트에 추가
+            this.index++; // 인덱스 증가
 
-          // 출력 완료되면 인터벌 멈추기
-          if (this.index === this.answer.length) {
-            clearInterval(this.intervalId);
-            this.showComponent();
-          }
-        }, 10);
+            // 출력 완료되면 인터벌 멈추기
+            if (this.index === this.answer.length) {
+              clearInterval(this.intervalId);
+              // this.showComponent();
+              resolve(); // 타이핑 애니메이션 완료 시점에 Promise resolve
+            }
+          }, 10);
+        });
       }
       this.isTyping = !this.isTyping;
     }
