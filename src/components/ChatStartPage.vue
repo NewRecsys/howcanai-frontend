@@ -1,7 +1,7 @@
 <template>
-<p style="color: white;">isFirst: {{ isFirst }}</p>
+<!-- <p style="color: white;">isFirst: {{ isFirst }}</p>
 <p style="color: white;">{{ isTyping }}</p>
-<p style="color: white;">{{ chatDetail.length }}</p>
+<p style="color: white;">{{ chatDetail.length }}</p> -->
 <!-- <p style="color: white;">{{ chatDetail }}</p> -->
 <!-- <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
 <!-- <p style="color: white;">{{ this.$store.state.userModule.accessToken ?? 'undefined'}}</p> -->
