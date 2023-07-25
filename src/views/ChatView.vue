@@ -27,31 +27,20 @@
 <script>
 import MainPage from '@/components/MainPage.vue';
 import SideBar from '@/components/SideBar.vue';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   components: { MainPage, SideBar },
   name: "IndexView",
-  data() {
-    return {
-      isSideBarOpen: false,
-      sideBarWidth: 0,
-    }
-  },
-  methods: {
-    openSideBar() {
-      this.isSideBarOpen = true;
-      this.sideBarWidth = 240;
-    },
-    closeSideBar() {
-      this.isSideBarOpen = false;
-      this.sideBarWidth = 0;
-    }
-  },
   computed: {
+    ...mapState('layoutModule', ['isSideBarOpen', 'sideBarWidth']),
     toggleButton() {
       return this.isSideBarOpen ? '<' : '☰';
     },
-  }
+  },
+  methods: {
+    ...mapActions('layoutModule', ['openSideBar', 'closeSideBar']),
+  },
 };
 </script>
 

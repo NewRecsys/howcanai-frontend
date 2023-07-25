@@ -24,7 +24,7 @@
       <!-- test -->
       <!-- <ChatHistory :contentText="contentText"></ChatHistory> -->
       <!-- History 받아옴 -->
-      <div v-for="chat in chatList" :key="chat.id">
+      <div v-for="chat in chatList" :key="chat.id" @click="closeSideBar">
         <router-link :to="`/chat/${chat.id}`">
           <ChatHistory :contentText="chat.title"></ChatHistory>
         </router-link>
@@ -75,6 +75,7 @@ export default {
   methods: {
     ...mapActions(['fetchChatList', 'resetChatDetail', 'resetChatList']),
     ...mapActions('userModule', ['logout']),
+    ...mapActions('layoutModule', ['closeSideBar']),
 
     // resetChatDetail() {
     //   this.$store.dispatch('resetChatDetail');
