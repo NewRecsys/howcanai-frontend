@@ -1,11 +1,5 @@
 <template>
   <div class="index-container">
-    <!-- TOP BAR -->
-    <div class="top">
-      <!-- top -->
-      <button class="sidebar-button" @click="openSideBar"
-      >{{ toggleButton }}</button>
-    </div>
 
     <!-- SIDE BAR -->
     <!-- width < 860 -->
@@ -17,8 +11,16 @@
     <!-- width > 860 -->
     <div class="side"><side-bar></side-bar></div>
 
+    <div class="top-mainpart-container">
+    <!-- TOP BAR -->
+    <div class="top">
+      <!-- top -->
+      <button class="sidebar-button" @click="openSideBar"
+      >{{ toggleButton }}</button>
+    </div>
     <!-- MAIN PAGE -->
     <div class="mainpart"><main-page></main-page></div>
+  </div>
   </div>
 </template>
 
@@ -75,11 +77,10 @@ export default {
   .sidebar {
     position: fixed;
     transition: 300ms;
-    position: fixed;
     z-index: 100;
   }
   .index-container {
-    height: 100vh;
+    height: 100%;
   }
 
   .top {
@@ -102,28 +103,22 @@ export default {
     background-color: #000000;
   }
 
-  /* .mainpart {
-    margin-top: 88px;
-    margin-left: 240px;
-    height: calc(100% - 88px);
-    background-color: #e9ecef;
-  } */
-
   .mainpart {
-    /* margin-top: 20px; */
     margin-top: 0px;
     /* margin-top: 0 으로 하면 스크롤 사라지는거 되는데 그러면 top bar 어떻게 바꿀지 생각해봐야 함... */
     margin-left: 240px;
-    /* height: calc(100% - 68px); */
     background-color: #000000;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
-    /* height: 100vh; */
-
     height: 100%;
-    /* box-sizing: border-box; */
-
+    flex-grow: 1;
+    box-sizing: border-box;
+  }
+  .top-mainpart-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   @media (max-width: 859px) {
@@ -132,11 +127,14 @@ export default {
     }
     .mainpart {
       margin-left: 0;
-      margin-top: 0;
+      /* margin-top: 0; */
+      /* margin-top: 48px; */
+      padding-top: 48px;
     }
     .signin-container, .signup-container {
       flex-direction: column;
-      height: 100vh;
+      /* height: 100vh; */
+      height: 100%;
       gap: 28px;
     }
   }
@@ -146,7 +144,7 @@ export default {
       display: none;
     }
     .mainpart {
-      margin-top: 0;
+      padding-top: 0;
     }
   }
 </style>

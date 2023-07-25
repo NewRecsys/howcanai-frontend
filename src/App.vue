@@ -17,6 +17,7 @@ export default {
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: 0.5px;
+  height: 100%;
 }
 
 body {
@@ -26,18 +27,10 @@ body {
   margin: 0;
   padding: 0;
   /* mobile viewport bug fix */
-  /* min-height: 100vh;
-  min-height: -webkit-fill-available; */
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 ::-webkit-scrollbar {
   width: 0px;
 }
-@supports (-webkit-touch-callout: none) {
-  /* 해당 브라우저가 -webkit-touch-callout 기능을 지원하는 경우 */
-  #app {
-    height: -webkit-fill-available;
-  }
-}
-
 </style>
