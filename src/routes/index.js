@@ -41,11 +41,11 @@ const routes = [
       {
         path: "/chat/:id",
         component: ChatMainArea,
-        beforeRouteLeave(to, from, next) {
-          // chatDetail 초기화 
-          store.dispatch('resetChatDetail');
-          next();
-        },
+        // beforeRouteLeave(to, from, next) {
+        //   // chatDetail 초기화 
+        //   store.dispatch('resetChatDetail');
+        //   next();
+        // },
       },
     ]
   },

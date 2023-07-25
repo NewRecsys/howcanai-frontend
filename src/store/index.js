@@ -211,6 +211,14 @@ const store = createStore({
       }
     },
 
+    // ====== [ set isFirst ] ========
+    setIsFirstTrue({ commit }) {
+      commit('setIsFirst', true);
+    },
+    setIsFirstFalse({ commit }) {
+      commit('setIsFirst', false);
+    },
+
     // ====== [ resetNewChat ] ========
     // ✅ 쿼리 날린 직후 동작 
     resetNewChat({ commit }) {

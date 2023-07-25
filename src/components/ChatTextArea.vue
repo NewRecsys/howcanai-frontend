@@ -27,7 +27,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['makeNewChat', 'sendQuestion']),
+    ...mapActions(['makeNewChat', 'sendQuestion', 'setIsFirstFalse']),
+    ...mapActions('layoutModule', ['setTyping']),
 
     resizeTextarea() {
       this.$nextTick(() => {
@@ -44,6 +45,7 @@ export default {
       if (event.shiftKey) { // shift + enter
         this.userQuery += '\n';
       } else { // enter
+        this.setTyping();
         const userQuery = this.userQuery;
         event.preventDefault();
         console.log('this.$route.path === /chat', this.$route.path === '/chat');
@@ -85,7 +87,7 @@ export default {
 
         this.$store.commit('setIsVisibleNewQuestion', true);
         this.userQuery = '';
-        this.$store.commit('setIsFirst', true);
+        this.$store.commit('setIsFirst', false);
       }
     },
   },
