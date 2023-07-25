@@ -90,6 +90,7 @@ html, body {
   box-sizing: border-box;
 
   /* gap: 40px; */
+  height: 100vh;
 }
 
 /* .sign-logo-container {
@@ -189,4 +190,10 @@ html, body {
   color: #fff;
   transition: 300ms;
 }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 0) {
+    .signin-container {
+      height: -webkit-fill-available;
+    }
+  }
 </style>
