@@ -1,8 +1,8 @@
 <template>
   <!-- text -->
-  <p style="color: white;">{{ isFirst }}</p>
+  <!-- <p style="color: white;">{{ isFirst }}</p>
   <p style="color: white;">{{ isTyping }}</p>
-  <p style="color: white;">{{ chatDetail.length }}</p>
+  <p style="color: white;">{{ chatDetail.length }}</p> -->
   <!-- <p style="color: white;">{{ this.$route.path === '/chat' }}</p> -->
   
   <!-- 현재 채팅방의 모든 QnA -->
