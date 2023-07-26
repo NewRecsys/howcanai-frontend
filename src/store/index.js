@@ -111,6 +111,7 @@ const store = createStore({
     //    3️) newQuestion 설정
     async makeNewChat({ commit }, question ) { // TODO: 실행된 다음에 pushChatList -> 
       // 첫번째 쿼리를 타이틀로
+      console.log('makeNewChat 에서의 question 을 잘 받아오는가', question);
       console.log('question:', question);
       const title = makeTruncatedText(question);
       console.log('after makeTruncatedText title', title)
@@ -142,6 +143,7 @@ const store = createStore({
     // ✅ /chat 또는 /chat/:id 에서 쿼리를 날렸을 때 동작
     async sendQuestion({ commit }, { chatRoomId, question }) {
       // newQuestion에 현재 질문 추가 후 API 대기 처리
+      console.log('sendQuestion 에서의 question 을 잘 받아오는가', question);
       commit('setNewQuestion', question);
       commit('setIsLoading', true);
       console.log('chatRoomId:', chatRoomId);
@@ -155,6 +157,7 @@ const store = createStore({
             question: response.data.question,
             answer: response.data.answer,
             references: response.data.references,
+            // nexts: response.data.nexts,
           };
           console.log('newChatDetail:', newChatDetail);
           // qna 쌍 push 
@@ -183,7 +186,8 @@ const store = createStore({
           id: qna.id,
           question: qna.question,
           answer: qna.answer,
-          references: qna.references
+          references: qna.references,
+          // nexts: qna.nexts,
         }));
         commit('setChatDetail', chatDetail);
       } catch (error) {

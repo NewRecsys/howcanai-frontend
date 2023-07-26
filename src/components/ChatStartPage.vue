@@ -80,7 +80,7 @@ export default {
         this.$store.commit('setIsVisibleNewQuestion', true);
         this.$router.push(`/chat/${this.newChatId}`);
         // 첫번째 쿼리 날리면 isFirst=false, isTyping=true
-        this.setIsFirstFalse();
+        // this.setIsFirstFalse();
         this.setTyping();
 
         this.sendQuestion({ chatRoomId: this.newChatId, question: question })
