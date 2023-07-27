@@ -16,7 +16,7 @@
   </div>
   
   <!-- 다음 쿼리 추천 -->
-  <div v-if="isVisibleNextQuestion && isVisibleRef" class="pre-question">
+  <div v-if="isVisibleNextQuestion && isVisibleRef" class="next-question">
     <div class="nextquestion-container"  
     v-for="(q, i) in newNexts" 
     :key="i" 
