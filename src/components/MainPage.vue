@@ -5,6 +5,7 @@
     
     <!-- <div class="chat-area" ref="chatArea"> -->
     <div class="chat-area">
+      <!-- sign in/out message -->
       <div v-if="$store.state.userModule.loggedIn">
         <SignInComplete />
       </div>

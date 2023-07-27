@@ -79,20 +79,20 @@ export default {
 
 
     handleNewChatButton() {
-      this.setIsFirstTrue();
+      // this.setIsFirstTrue();
       this.resetChatDetail();
       this.setTyping();
       this.closeSideBar();
     },
 
     handleChatListButton() {
-      this.setIsFirstTrue();
+      // this.setIsFirstTrue();
       this.resetTyping();
       this.closeSideBar();
     },
 
     handleSignButton() {
-      this.setIsFirstTrue();
+      // this.setIsFirstTrue();
       this.resetChatDetail();
       this.setTyping();
       this.submitLogout();

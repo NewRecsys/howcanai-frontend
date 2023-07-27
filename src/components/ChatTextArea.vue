@@ -87,7 +87,7 @@ export default {
 
         this.$store.commit('setIsVisibleNewQuestion', true);
         this.userQuery = '';
-        this.$store.commit('setIsFirst', false);
+        this.$store.commit('setIsFirst', true);
       }
     },
   },
