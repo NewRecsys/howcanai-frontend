@@ -40,7 +40,7 @@
     <!-- 🐞🛠️ Fixed : /chat 에서 처음 쿼리 날릴 때 로드 안됨  -->
     <!-- 🐞🛠️ 비동기 처리 등등 더 해야될 듯? -->
     <ChatQuestion 
-    v-if="isVisibleNewQuestion"
+    v-if="isVisibleNewQuestion && !(this.$route.path === '/chat')"
     :question="newQuestion" />
   </div>
 </div>

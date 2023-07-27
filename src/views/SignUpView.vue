@@ -18,7 +18,7 @@
         <input class="input-field" type="password" id="confirm_password" v-model="confirm_password"
           placeholder="check your password" required>
       </div>
-      </div>
+    </div>
       <div class="submit-container">
         <button class="signup-button" type="submit">submit</button>
       </div>
@@ -36,10 +36,22 @@ export default {
       email: '',
       password: '',
       confirm_password: '',
+      // errorMessage: '',
     };
+  },
+  computed: {
+    isPasswordValid() {
+      // 8자 이상의 영어, 숫자, 특수문자로만 구성되어 있는지 검사
+      const passwordPattern = /^(?=.*[A-Za-z\d@$!%*#?&]).{8,}$/;
+      return passwordPattern.test(this.password);
+    },
   },
   methods: {
     submitForm() {
+      if (!this.isPasswordValid) {
+        alert('8자 이상의 영어, 숫자, 특수문자로 비밀번호를 구성해주세요.')
+        return;
+      }
       if (this.password !== this.confirm_password) {
         alert('비밀번호가 일치하지 않습니다.');
         return;
@@ -73,6 +85,11 @@ export default {
         })
         .catch(error => {
           // 요청이 실패한 경우 처리 로직 작성
+          if (error.response.status === 409) {
+            alert('이미 존재하는 username/e-mail 입니다.');
+          } else {
+            alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
+          }
           console.error(error);
         });
     },
