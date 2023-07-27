@@ -16,7 +16,7 @@
   </div>
   
   <!-- 다음 쿼리 추천 -->
-  <div v-if="isVisibleNextQuestion" class="pre-question">
+  <div v-if="isVisibleNextQuestion && isVisibleRef" class="pre-question">
     <div class="nextquestion-container"  
     v-for="(q, i) in newNexts" 
     :key="i" 
@@ -49,7 +49,7 @@ export default {
     chatId: String
   },
   computed: {
-    ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail','isFirst', 'newNexts', 'isVisibleNextQuestion']),
+    ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail','isFirst', 'newNexts', 'isVisibleNextQuestion', 'isVisibleRef']),
     ...mapState('layoutModule', ['isTyping']),
     newChatData() {
       return this.$store.state.newChat;

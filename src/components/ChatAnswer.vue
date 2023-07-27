@@ -8,7 +8,7 @@
     </div>
 
     <!-- reference -->
-    <div v-if="isVisible" style="transition: 300ms;">
+    <div v-if="isVisibleRef" style="transition: 300ms;">
       <chat-answer-reference v-for="(reference, i) in references" :key="i" :reference="reference"></chat-answer-reference>
     </div>
 
@@ -35,7 +35,7 @@ export default {
     ChatAnswerReference,
   },
   computed: {
-    ...mapState(['isVisibleNextQuestion'])
+    ...mapState(['isVisibleNextQuestion', 'isVisibleRef'])
   },
   props: {
     typing: Boolean,
@@ -57,15 +57,15 @@ export default {
       typedText: "",
       index: 0,
       intervalId: null,
-      isVisible: true,
+      // isVisible: true,
     };
   },
   created() {
     if (this.typing) {
-      this.isVisible = false;
+      this.setIsVisibleRefFalse();
       // 타이핑 끝난 후 isVisible true 로 설정
       this.startTyping().then(() => {
-        this.isVisible = true;
+        this.setIsVisibleRefTrue();
       });
     } else {
       this.typedText = this.answer;
@@ -78,7 +78,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['sendQuestion']),
+    ...mapActions(['sendQuestion', 'setIsVisibleRefTrue', 'setIsVisibleRefFalse']),
     commitNextQuery(question) {
       console.log('nextQuery 추천 [question] (선택)', question);
       console.log('nextQuery 추천 [newQuestion] 확인:', this.$store.state.newQuestion);
