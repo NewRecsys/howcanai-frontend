@@ -11,8 +11,20 @@
     <ChatAnswer 
     :typing=isTyping
     :answer="chat.answer" 
-    :references="chat.references"/>
+    :references="chat.references" 
+    :nexts="chat.nexts"/>
   </div>
+  
+  <!-- 다음 쿼리 추천 -->
+  <div v-if="isVisibleNextQuestion" class="pre-question">
+    <div class="nextquestion-container"  
+    v-for="(q, i) in newNexts" 
+    :key="i" 
+    @click="commitNextQuery(q)">
+      <div class="nextquestion-inner">{{ q }}</div>
+    </div>
+  </div>
+
   <!-- 임시로 질문 보여주기 -->
   <ChatQuestion 
     v-if="isVisibleNewQuestion"
@@ -37,7 +49,7 @@ export default {
     chatId: String
   },
   computed: {
-    ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail','isFirst']),
+    ...mapState(['isVisibleNewQuestion', 'isLoading', 'newQuestion', 'chatDetail','isFirst', 'newNexts', 'isVisibleNextQuestion']),
     ...mapState('layoutModule', ['isTyping']),
     newChatData() {
       return this.$store.state.newChat;
@@ -54,7 +66,29 @@ export default {
   //   }
   // },
   methods: {
+    ...mapActions(['sendQuestion']),
     ...mapActions('layoutModule', ['setTyping', 'resetTyping']),
+
+    // next
+    commitNextQuery(question) {
+      console.log('nextQuery 추천 [question] (선택)', question);
+      console.log('nextQuery 추천 [newQuestion] 확인:', this.$store.state.newQuestion);
+
+      // 새로운 question 으로 보이게
+      this.$store.commit('setIsVisibleNewQuestion', true);
+      // 현재 chatroom id 설정
+      const chatRoomId = this.$route.params.id;
+      // 질문 보내기 
+      this.sendQuestion({ chatRoomId: chatRoomId, question: question })
+      .then(() => {
+        this.$store.commit('setIsVisibleNewQuestion', false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    },
+
+
     // 🐞 TODO: 자동 스크롤 안 되는 문제
     // 🐞 분명 어젯밤에는 됐음 이상함 ㅋㅋ;
     scrollToBottom() {
@@ -125,5 +159,41 @@ export default {
 </script>
 
 <style>
+.nextquestion-container {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0 6px
+}
 
+.nextquestion-inner {
+  display: inline-flex;
+  max-width: 754px;
+  padding: 12px 20px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 24px;
+  border: 1px solid #9747FF;
+  background: #000000;
+
+  color: #9747FF;
+  font-size: 16px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+}
+
+.nextquestion-inner:hover {
+  background: #9747FF;
+  color: white;
+  transition: 300ms;
+}
 </style>

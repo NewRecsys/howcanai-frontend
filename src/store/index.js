@@ -13,6 +13,9 @@ const store = createStore({
 
     // isVisibleNewQuestion: 사용자가 쿼리를 날린 직후인지? (question만 보여줌)
     isVisibleNewQuestion: false,
+    isVisibleNextQuestion: false, // TODO: answer 받으면 true 로 변경 & 클릭하거나 엔터 누르면 false 로 변경
+
+    isVisibleRef: true,
 
     // isLoading: API 리턴 대기중인지? (추후 로딩 애니메이션 추가 예정)
     isLoading: false,
@@ -39,6 +42,7 @@ const store = createStore({
     newQuestion: '',      // 쿼리 날리자마자 갱신 
     newAnswer: '',        // 서버에서 받아오기 -> 안씀
     newReferences: [],    // 서버에서 받아오기 -> 안씀
+    newNexts: [],    // 서버에서 받아오기 -> 안씀
     // nextQuestions: []  // 기능 추가 (다음 쿼리 추천)
 
     // 프론트엔드용 (유저 공통 추천 질문)
@@ -46,6 +50,15 @@ const store = createStore({
   },
 
   mutations: {
+    setIsVisibleRef(state, bool) {
+      state.isVisibleRef = bool;
+    },
+    setNewNexts(state, newNexts) {
+      state.newNexts = newNexts;
+    },
+    setIsVisibleNextQuestion(state, bool) {
+      state.isVisibleNextQuestion = bool;
+    },
     setIsVisibleNewQuestion(state, bool) {
       state.isVisibleNewQuestion = bool;
     },
@@ -141,13 +154,18 @@ const store = createStore({
 
     // ====== [ sendQuestion ] ========
     // ✅ /chat 또는 /chat/:id 에서 쿼리를 날렸을 때 동작
-    async sendQuestion({ commit }, { chatRoomId, question }) {
+    // TODO: 처음에 setNewQuestion 전에 안보이게, 후에 보이게 (setIsVisibleNewQuestion)
+    async sendQuestion({ commit, state }, { chatRoomId, question }) {
       // newQuestion에 현재 질문 추가 후 API 대기 처리
       console.log('sendQuestion 에서의 question 을 잘 받아오는가', question);
       commit('setNewQuestion', question);
       commit('setIsLoading', true);
       console.log('chatRoomId:', chatRoomId);
       console.log('question:', question);
+
+      // 보내면 nextQuery 사라지게 
+      commit('setIsVisibleNextQuestion', false);
+
       try {
         try {
           const response = await axios.post(`/qna/create/${chatRoomId}`, { 'query': question });
@@ -157,11 +175,17 @@ const store = createStore({
             question: response.data.question,
             answer: response.data.answer,
             references: response.data.references,
-            // nexts: response.data.nexts,
+            nexts: response.data.nexts,
           };
+          commit('setNewNexts', response.data.nexts);
+          console.log('newNexts', state.newNexts)
+
           console.log('newChatDetail:', newChatDetail);
           // qna 쌍 push 
           commit('pushChatDetail', newChatDetail);
+
+          // 답변 오면 nextQuery 보이게
+          commit('setIsVisibleNextQuestion', true);
         } catch (error) {
           console.error(error);
         }
@@ -178,7 +202,7 @@ const store = createStore({
     // ====== [ fetchChatDetail ] ========
     // chatRoomId에 해당하는 대화 데이터 전부 불러옴
     // ✅ /chat/:id 를 누르기 전 동작 (routes/index.js 에서 처리)
-    async fetchChatDetail({ commit, dispatch }, chatRoomId) {
+    async fetchChatDetail({ commit, dispatch, state }, chatRoomId) {
       try {
         await dispatch('resetChatDetail');
         const response = await axios.get(`/chatroom/detail/${chatRoomId}`);
@@ -187,8 +211,11 @@ const store = createStore({
           question: qna.question,
           answer: qna.answer,
           references: qna.references,
-          // nexts: qna.nexts,
+          nexts: qna.nexts,
         }));
+
+        commit('setNewNexts', response.data.nexts);
+        console.log('newNexts', state.newNexts)
         commit('setChatDetail', chatDetail);
       } catch (error) {
         console.error(error);
@@ -242,6 +269,20 @@ const store = createStore({
     // ✅ /chat, /chat/:id 렌더링 전에 동작
     resetChatRoom({ commit }) {
       commit('RESET_CHATROOM_ID');
+    },
+
+    // nextQuestion
+    setNextQuestion({ commit }) {
+      commit('setIsVisibleNextQuestion', true);
+    },
+    resetNextQuestion({ commit }) {
+      commit('setIsVisibleNextQuestion', false);
+    },
+    setIsVisibleRefTrue({ commit })  {
+      commit('setIsVisibleRef', true);
+    },
+    setIsVisibleRefFalse({ commit })  {
+      commit('setIsVisibleRef', false);
     },
   },
   getters: {

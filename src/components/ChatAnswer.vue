@@ -2,21 +2,40 @@
   <div>
     <!-- test -->
     <!-- <p style="color: #fff">{{ isVisible }}</p> -->
+
+    <!-- answer -->
     <div class="chat-answer" v-html="typedText">
     </div>
-      <div v-if="isVisible" style="transition: 300ms;">
-        <chat-answer-reference v-for="(reference, i) in references" :key="i" :reference="reference"></chat-answer-reference>
+
+    <!-- reference -->
+    <div v-if="isVisible" style="transition: 300ms;">
+      <chat-answer-reference v-for="(reference, i) in references" :key="i" :reference="reference"></chat-answer-reference>
+    </div>
+
+    <!-- next query -->
+    <!-- <div v-if="isVisible && isVisibleNextQuestion" class="pre-question">
+      <div class="prequestion-container"  style="display: inline-block; padding: 0 6px" 
+      v-for="(q, i) in nexts" 
+      :key="i" 
+      @click="commitNextQuery(q)">
+        <div class="prequestion-inner">{{ q }}</div>
       </div>
+    </div> -->
+
   </div>
 </template>
 
 <script>
 import ChatAnswerReference from './ChatAnswerReference.vue';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'ChatAnswer',
   components: {
     ChatAnswerReference,
+  },
+  computed: {
+    ...mapState(['isVisibleNextQuestion'])
   },
   props: {
     typing: Boolean,
@@ -26,6 +45,9 @@ export default {
     },
     references: {
       // 일단 지금은 default 값으로 지정 -> 나중에는 default [] 
+      type: Array,
+    },
+    nexts: {
       type: Array,
     }
   },
@@ -56,6 +78,24 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['sendQuestion']),
+    commitNextQuery(question) {
+      console.log('nextQuery 추천 [question] (선택)', question);
+      console.log('nextQuery 추천 [newQuestion] 확인:', this.$store.state.newQuestion);
+
+      // 새로운 question 으로 보이게
+      this.$store.commit('setIsVisibleNewQuestion', true);
+      // 현재 chatroom id 설정
+      const chatRoomId = this.$route.params.id;
+      // 질문 보내기 
+      this.sendQuestion({ chatRoomId: chatRoomId, question: question })
+      .then(() => {
+        this.$store.commit('setIsVisibleNewQuestion', false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    },
     // showComponent() {
     //   this.isVisible = true;
     // },
