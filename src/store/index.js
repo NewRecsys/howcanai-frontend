@@ -2,6 +2,7 @@
 
 import { createStore } from 'vuex';
 import axios from 'axios';
+import router from '@/routes/index.js';
 import { makeTruncatedText } from '../utils.js';
 import userModule from './user.js';
 import layoutModule from './layout.js';
@@ -156,6 +157,11 @@ const store = createStore({
     // ✅ /chat 또는 /chat/:id 에서 쿼리를 날렸을 때 동작
     // TODO: 처음에 setNewQuestion 전에 안보이게, 후에 보이게 (setIsVisibleNewQuestion)
     async sendQuestion({ commit, state }, { chatRoomId, question }) {
+      // 로그인 안 한 경우
+      if(!userModule.state.loggedIn) {
+        alert('로그인 후 이용할 수 있어요.');
+        router.push('/signin');
+      }
       // newQuestion에 현재 질문 추가 후 API 대기 처리
       console.log('sendQuestion 에서의 question 을 잘 받아오는가', question);
       commit('setNewQuestion', question);
