@@ -46,7 +46,7 @@ const store = createStore({
     // nextQuestions: []  // 기능 추가 (다음 쿼리 추천)
 
     // 프론트엔드용 (유저 공통 추천 질문)
-    commonPreQuestions: ["2023년 추석 날짜는?", "이강인이 최근 이적한 팀은 어디인가요?", "앤드류 응 교수에 대해 설명해줘"],
+    commonPreQuestions: ["2023년 추석 날짜는?", "제로콜라의 장단점은?", "앤드류 응 교수에 대해 알려줘"],
   },
 
   mutations: {
