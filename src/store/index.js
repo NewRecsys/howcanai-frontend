@@ -46,7 +46,7 @@ const store = createStore({
     // nextQuestions: []  // 기능 추가 (다음 쿼리 추천)
 
     // 프론트엔드용 (유저 공통 추천 질문)
-    commonPreQuestions: ["제주도 맛집 추천", "탄산수를 마신 후에 꼭 양치를 하고 취침해야 하나요?", "스프레이형 모기약은 사람에게 무해한가요?"],
+    commonPreQuestions: ["2023년 추석 날짜는?", "이강인이 최근 이적한 팀은 어디인가요?", "앤드류 응 교수에 대해 설명해줘"],
   },
 
   mutations: {
