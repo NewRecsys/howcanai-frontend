@@ -166,7 +166,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 0 6px
 }
 
 .nextquestion-inner {
