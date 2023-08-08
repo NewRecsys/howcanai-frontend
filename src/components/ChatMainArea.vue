@@ -26,10 +26,12 @@
   </div>
 
   <!-- 임시로 질문 보여주기 -->
-  <ChatQuestion 
-    v-if="isVisibleNewQuestion"
-    :question="newQuestion" />
-  <LoadingSpinner v-if="isLoading"/>
+  <div class="qna">
+    <ChatQuestion 
+      v-if="isVisibleNewQuestion"
+      :question="newQuestion" />
+    <LoadingSpinner v-if="isLoading"/>
+  </div>
 </template>
 
 <script>
@@ -164,7 +166,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 0 6px
 }
 
 .nextquestion-inner {
